@@ -20,4 +20,6 @@ int main(void){
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
     }
+
+    return 0;
 }
