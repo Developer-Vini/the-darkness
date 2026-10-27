@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "wall.h"
+#include "../includes/wall.h"
 
 int main(){
     
