@@ -96,12 +96,5 @@ void drawWall(void){
 void destroyWall(void){
   glDeleteBuffers(1, &VBO);
   glDeleteVertexArray(1, VAO);
-  glDeleteProgram();
+  glDeleteProgram(shaderProgram);
 }
-glUseProgram(shaderProgram);
-
-
-glClear(GL_COLOR_BUFFER_BIT);
-
-glfwSwapBuffers(window);
-glfwPollEvents();
