@@ -93,7 +93,11 @@ void drawWall(void){
 }
 
 
-
+void destroyWall(void){
+  glDeleteBuffers(1, &VBO);
+  glDeleteVertexArray(1, VAO);
+  glDeleteProgram();
+}
 glUseProgram(shaderProgram);
 
 
