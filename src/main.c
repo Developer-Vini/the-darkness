@@ -6,8 +6,7 @@
 
 int main(){
     
-    initWall(); 
-
+    
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
         return 1;
@@ -33,6 +32,8 @@ int main(){
     }
 
     glViewport(0, 0, 800, 600);
+
+    initWall(); 
 
     while (!glfwWindowShouldClose(window)){
 
