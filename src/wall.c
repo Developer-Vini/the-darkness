@@ -1,23 +1,102 @@
-//as cordenadas sao xx yy e zz
+// as cordenadas sao xx yy e zz
+//  VBO - Ele armazena os dados dos vertices na memoria acessivel a GPU. 
+//  nesse caso, vou usar ela para guardar os quatro canto desse bixin ai
+//  VAO - ja essa, armazena a configuracao de como o opengl vai interpretar os dados dos vrts
 
 float vertices[] = {
-  -0.5f, 0.0f, -0.5f, 
-   0.5f, 0.0f, -0.5f,
-   0.5f, 0.0f, 0.5f,
-   -0.5f, 0.0f, 0.5f
-};
-
+    -0.5f, 0.0f, -0.5f,
+    0.5f, 0.0f, -0.5f,
+    0.5f, 0.0f, 0.5f,
+    -0.5f, 0.0f, 0.5f};
 
 unsigned int VBO;
+unsigned int vertexShader;
+unsigned int VAO;
+unsigned int fragmentShader;
+unsigned int shaderProgram;
+
 glGenBuffers(1, &VBO);
+glGenVertexArrays(1, &VAO);
+
+glBindVertexArray(VAO);
+
+vertexShader = glCreateShader(GL_VERTEX_SHADER);
+fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+shaderProgram = glCreateProgram();
 
 glBindBuffer(GL_ARRAY_BUFFER, VBO);
 glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-const char *vertexShaderSource  = 
-  "#version 330 core\n"
-  "layout (location = 0) in vec3 aPos; \n"
-  "void main()\n"
-  "{\n}"
-  "  gl_Position = vec4(aPos.x, aPos.y, 1.0);"
-  "}/0";
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
+
+
+
+
+const char *vertexShaderSource =
+    "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos; \n"
+    "void main()\n"
+    "{\n"
+    "  gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+
+const char *fragmentShaderSource =
+    "#version 330 core\n"
+    "out vec4 outColor;\n"
+    "void main()\n"
+    "{\n"
+    "  outColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\0";
+
+
+glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+
+
+glCompileShader(vertexShader);
+glCompileShader(fragmentShader);
+
+int sucess;
+char infoLog[512];
+
+glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &sucess);
+//glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &sucess);
+
+if (!sucess){
+  glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+  printf("ERROR! Compilation failed:\n%s\n", infoLog);
+}
+
+glGetShaderiv(fragmentShader, GL_LINK_STATUS, &sucess);
+if(!sucess){
+  glGetProgramInfoLog(fragmentShader, 512, NULL, infoLog);
+  printf("Fragment shader error:\n%s\n", infoLog);
+}
+
+glAttachShader(shaderProgram, vertexShader);
+glAttachShader(shaderProgram, fragmentShader);
+
+glLinkProgram(shaderProgram);
+
+glGetProgramiv(shaderProgram, GL_LINK_STATUS, &sucess);
+
+if(!sucess){
+  glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+  printf("shader program error:\n%s\n", infoLog);
+}
+
+glDeleteShader(vertexShader);
+glDeleteShader(fragmentShader);
+
+glUseProgram(shaderProgram);
+glBindVertexArray(VAO);
+
+
+glClear(GL_COLOR_BUFFER_BIT);
+glUseProgram(shaderProgram);
+glBindVertexArray(VAO);
+glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+glfwSwapBuffers(window);
+glfwPollEvents();
