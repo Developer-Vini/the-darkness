@@ -85,17 +85,19 @@ void initWall(void){
   glEnableVertexAttribArray(0);
 }
 
+void drawWall(void){
+  glUseProgram(shaderProgram);
+  glBindVertexArray(VAO);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+  glBindVertexArray(VAO);
+}
 
 
 
 glUseProgram(shaderProgram);
-glBindVertexArray(VAO);
 
 
 glClear(GL_COLOR_BUFFER_BIT);
-glUseProgram(shaderProgram);
-glBindVertexArray(VAO);
-glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 glfwSwapBuffers(window);
 glfwPollEvents();
