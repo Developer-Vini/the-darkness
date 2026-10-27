@@ -4,12 +4,14 @@
 #include "wall.h"
 
 int main(){
+    
+    //initWall(); 
+
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
         return 1;
     }
 
-    
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -33,10 +35,12 @@ int main(){
 
     while (!glfwWindowShouldClose(window)){
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        //drawWall();
+
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
     
     glfwTerminate();
