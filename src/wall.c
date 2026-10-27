@@ -52,7 +52,7 @@ void initWall(void){
     printf("ERROR! Compilation failed:\n%s\n", infoLog);
   } 
 
-  glGetShaderiv(fragmentShader, GL_LINK_STATUS, &sucess);
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &sucess);
   if(!sucess){
     glGetProgramInfoLog(fragmentShader, 512, NULL, infoLog);
     printf("Fragment shader error:\n%s\n", infoLog);
@@ -89,7 +89,7 @@ void drawWall(void){
   glUseProgram(shaderProgram);
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  glBindVertexArray(VAO);
+  glBindVertexArray(0);
 }
 
 
