@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include "wall.h"
 
 int main(){
     if(!glfwInit()){
