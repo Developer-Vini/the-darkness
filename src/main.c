@@ -16,7 +16,7 @@ int main(){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "nao sei o nome do jogo kakak", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(800, 600, "tela", NULL, NULL);
 
     if(!window){
         printf("error, window not initialized");
@@ -37,7 +37,7 @@ int main(){
 
     while (!glfwWindowShouldClose(window)){
 
-        glClearColor(0.2, 0.3f, 0.3f, 1.0f);
+        glClearColor(1.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         drawWall();
