@@ -43,6 +43,10 @@ int main(){
 //
 //printf("D: %.1f, %.1f, %.1f\n", direction.x, direction.y, direction.z);
 
+Vec3 test = {0.0f, -2.0f, -3.0f};
+float length = vec3Length(test);
+printf("lenght: %f\n", length);
+
     while (!glfwWindowShouldClose(window)){
 
         glClearColor(1.2f, 0.3f, 0.3f, 1.0f);
