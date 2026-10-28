@@ -12,7 +12,7 @@ Vec3 vec3Sub(Vec3 a, Vec3 b){
     return result;
 }
 
-float vec3Lenght(Vec3 v){
+float vec3Length(Vec3 v){
     float result;
 
     float x = v.x;
