@@ -21,9 +21,7 @@ float vec3Length(Vec3 v){
 
     result = x*x + y*y + z*z;
 
-    sqrt(result);
-
-    printf("result %f", result);
+    result = sqrtf(result);
 
     return result;
 }
