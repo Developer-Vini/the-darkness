@@ -8,7 +8,7 @@ typedef struct {
 } Vec3;
 
 Vec3 vec3Sub(Vec3 a, Vec3 b);
-float vec3Length(Vec3 v)
+float vec3Length(Vec3 v);
 
 
 #endif
