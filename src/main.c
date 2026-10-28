@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "../includes/camera.h"
 #include "../includes/wall.h"
 
 int main(){
@@ -34,6 +35,13 @@ int main(){
     glViewport(0, 0, 800, 600);
 
     initWall(); 
+
+//Vec3 cameraPosition = {0.0f, 2.0f, 3.0f};
+//Vec3 target = {0.0f, 0.0f, 0.0f};
+//
+//Vec3 direction = vec3Sub(target, cameraPosition);
+//
+//printf("D: %.1f, %.1f, %.1f\n", direction.x, direction.y, direction.z);
 
     while (!glfwWindowShouldClose(window)){
 
