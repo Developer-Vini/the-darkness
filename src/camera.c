@@ -6,7 +6,7 @@ Vec3 vec3Sub(Vec3 a, Vec3 b){
     Vec3 result;
     
     result.y = a.y - b.y;
-    result.z = b.x - a.x;
+    result.z = a.z - b.z;
 
     return result;
 }
