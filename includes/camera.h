@@ -7,6 +7,6 @@ typedef struct {
     float z;
 } Vec3;
 
-Vec3 vec3Sub(Vec3 a, Vec3b)
+Vec3 vec3Sub(Vec3 a, Vec3 b);
 
 #endif
