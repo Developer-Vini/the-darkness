@@ -49,3 +49,4 @@ Vec3 vec3nNormal(Vec3 vz){
     return vetoresNormalizados;
 
 }
+
