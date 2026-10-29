@@ -36,6 +36,15 @@ int main(){
 
     initWall(); 
 
+    Vec3 front = {0.0f,0.0f,-1.0f};
+    Vec3 up = {0.0f,1.0f,0.0f};
+
+    Vec3 right = vec3Cross(front, up);
+
+    printf("X: %f\n",right.x);
+    printf("y: %f\n",right.y);
+    printf("z: %f\n",right.z);
+
     while (!glfwWindowShouldClose(window)){
 
         glClearColor(1.2f, 0.3f, 0.3f, 1.0f);
