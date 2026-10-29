@@ -26,3 +26,26 @@ float vec3Length(Vec3 v){
     return result;
 }
 
+Vec3 vec3nNormal(Vec3 vz){
+
+    float vetorX;
+    float vetorY;
+    float vetorZ;
+    
+    float lengthVetor = vec3Length(vz); 
+    
+    if(lengthVetor == 0){
+        printf("nao e possivel dividir por zero");
+        Vec3 zero = { 0.0f, 0.0f, 0.0f};
+        return zero;
+    };
+
+    vetorX = vz.x / lengthVetor;
+    vetorY = vz.y / lengthVetor;
+    vetorZ = vz.z / lengthVetor;
+
+    Vec3 vetoresNormalizados = {vetorX, vetorY, vetorZ};
+    
+    return vetoresNormalizados;
+
+}
