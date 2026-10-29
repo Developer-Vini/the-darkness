@@ -10,6 +10,6 @@ typedef struct {
 Vec3 vec3Sub(Vec3 a, Vec3 b);
 float vec3Length(Vec3 v);
 Vec3 vec3nNormal(Vec3 vz);
-Vec3 Vec3Cross(Vec3 a, Vec3 b);
+Vec3 vec3Cross(Vec3 a, Vec3 b);
 
 #endif
