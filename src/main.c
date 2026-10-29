@@ -36,17 +36,6 @@ int main(){
 
     initWall(); 
 
-//Vec3 cameraPosition = {0.0f, 2.0f, 3.0f};
-//Vec3 target = {0.0f, 0.0f, 0.0f};
-//
-//Vec3 direction = vec3Sub(target, cameraPosition);
-//
-//printf("D: %.1f, %.1f, %.1f\n", direction.x, direction.y, direction.z);
-
-Vec3 test = {0.0f, -2.0f, -3.0f};
-float length = vec3Length(test);
-printf("lenght: %f\n", length);
-
     while (!glfwWindowShouldClose(window)){
 
         glClearColor(1.2f, 0.3f, 0.3f, 1.0f);
