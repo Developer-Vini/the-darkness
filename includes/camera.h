@@ -22,5 +22,5 @@ float vec3Length(Vec3 v);
 Vec3 vec3nNormal(Vec3 vz);
 Vec3 vec3Cross(Vec3 a, Vec3 b);
 void cameraUpdateVectors(Camera *camera);
-
+float vec3Dot(Vec3 a, Vec3 b);
 #endif

@@ -79,3 +79,7 @@ void cameraUpdateVectors(Camera *camera){
     //printf("value normal: %f\n", valueNormal.y);
     //printf("value normal: %f\n", valueNormal.z);
 }
+
+float vec3Dot(Vec3 a, Vec3 b){
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
