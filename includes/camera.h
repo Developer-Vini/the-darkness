@@ -25,4 +25,5 @@ void cameraUpdateVectors(Camera *camera);
 float vec3Dot(Vec3 a, Vec3 b);
 void cameraGetViewMat(Camera *camera, Mat4 result);
 void cameraGetPerspective(float fov, float aspect, float near, float far, Mat4 result);
+void mat4Multiply(Mat4 a, Mat4 b, Mat4 result);
 #endif
