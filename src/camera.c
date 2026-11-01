@@ -100,4 +100,8 @@ void cameraGetViewMat(Camera *camera, Mat4 result){
     result[2][2] = -camera->front.z;
     result[2][3] =  vec3Dot(camera->front, camera->position);
 
+    result[3][0] = 0.0f;
+    result[3][1] = 0.0f;
+    result[3][2] = 0.0f;
+    result[3][3] = 1.0f;
 }
