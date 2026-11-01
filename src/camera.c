@@ -1,4 +1,3 @@
-// para calcular o comprimento usa o teorema de pitagoras d = raizquadrada(x2 + y2 + z2)
 #include <stdio.h>
 #include "../includes/camera.h"
 #include <math.h>
