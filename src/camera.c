@@ -83,3 +83,21 @@ void cameraUpdateVectors(Camera *camera){
 float vec3Dot(Vec3 a, Vec3 b){
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
+
+void cameraGetViewMat(Camera *camera, Mat4 result){
+    result[0][0] = camera->right.x;
+    result[0][1] = camera->right.y;
+    result[0][2] = camera->right.z;
+    result[0][3] = -vec3Dot(camera->right, camera->position);
+
+    result[1][0] = camera->up.x;
+    result[1][1] = camera->up.y;
+    result[1][2] = camera->up.z;
+    result[1][3] = -vec3Dot(camera->up, camera->position);
+
+    result[2][0] = -camera->front.x;
+    result[2][1] = -camera->front.y;
+    result[2][2] = -camera->front.z;
+    result[2][3] =  vec3Dot(camera->front, camera->position);
+
+}
