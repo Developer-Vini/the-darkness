@@ -36,7 +36,35 @@ int main(){
 
     initWall(); 
 
-    
+
+    Camera camera = {
+        .position = {
+            0.0f, 0.0f, 3.0f
+        },
+        .front = {
+            0.0f, 0.0f, -1.0f
+        },
+        .up = {
+            0.0f, 1.0f, 0.0f
+        }
+    };
+
+    cameraUpdateVectors(&camera);
+
+
+    Mat4 view;
+
+    cameraGetViewMat(&camera, view);
+
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j<4; j++){
+            printf("%8.2f", view[i][j]);
+        }
+        printf("\n");
+    }
+
+
+
     while (!glfwWindowShouldClose(window)){
 
         glClearColor(1.2f, 0.3f, 0.3f, 1.0f);

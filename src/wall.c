@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <glad/glad.h>
-#include "wall.h"
+#include "../includes/wall.h"
 
 static const float vertices[] = {
     -0.5f, 0.0f, -0.5f,
