@@ -14,7 +14,7 @@ typedef struct{
     Vec3 right;
 } Camera;
 
-typedef float matriz[4][4];
+typedef float Mat4[4][4];
 
 
 Vec3 vec3Sub(Vec3 a, Vec3 b);
