@@ -60,3 +60,16 @@ Vec3 vec3Cross(Vec3 a, Vec3 b){
 
     return result;
 }   
+
+void cameraUpdateVectors(Camera *camera){
+
+    Vec3 rigthC;
+
+    rigthC = vec3Cross(camera->front, camera->up);
+    Vec3 valueNormal = vec3nNormal(rigthC);
+    camera->right = valueNormal;
+
+    //printf("value normal: %f\n", valueNormal.x);
+    //printf("value normal: %f\n", valueNormal.y);
+    //printf("value normal: %f\n", valueNormal.z);
+}

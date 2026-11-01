@@ -39,7 +39,7 @@ int main(){
     Vec3 front = {0.0f,0.0f,-1.0f};
     Vec3 up = {0.0f,1.0f,0.0f};
 
-    Vec3 right = vec3Cross(front, up);
+    Vec3 right = vec3nNormal(vec3Cross(front, up));
 
     printf("X: %f\n",right.x);
     printf("y: %f\n",right.y);
