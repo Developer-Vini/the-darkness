@@ -2,7 +2,6 @@
 #include "../includes/camera.h"
 #include <math.h>
 
-
 Vec3 vec3Sub(Vec3 a, Vec3 b){
     Vec3 result;
     
@@ -103,4 +102,42 @@ void cameraGetViewMat(Camera *camera, Mat4 result){
     result[3][1] = 0.0f;
     result[3][2] = 0.0f;
     result[3][3] = 1.0f;
+}
+
+void cameraGetPerspective(float fov, float aspect, float near, float far, Mat4 result){
+    float angle = 180;
+    float PI = M_PI;
+
+    float radian = fov * (PI / angle);
+    float calcRadian = radian / 2;
+    float f = 1 / (tanf(calcRadian));
+
+    float calcFx = f / aspect;
+    float fX = calcFx;
+
+
+    float A;
+    float B;
+    A = -(far + near) / (far - near);
+    B = -2 * (far * near) / (far - near);
+
+    result[0][0] = fX;
+    result[0][1] = 0;
+    result[0][2] = 0;
+    result[0][3] = 0;
+
+    result[1][0] = 0;
+    result[1][1] = f;
+    result[1][2] = 0;
+    result[1][3] = 0;
+
+    result[2][0] = 0;
+    result[2][1] = 0;
+    result[2][2] = A;
+    result[2][3] = B;
+
+    result[3][0] = 0;
+    result[3][1] = 0;
+    result[3][2] = -1;
+    result[3][3] = 0;
 }
