@@ -3,6 +3,7 @@
 #include "../includes/camera.h"
 #include <math.h>
 
+
 Vec3 vec3Sub(Vec3 a, Vec3 b){
     Vec3 result;
     
@@ -62,13 +63,18 @@ Vec3 vec3Cross(Vec3 a, Vec3 b){
 }   
 
 void cameraUpdateVectors(Camera *camera){
-
     Vec3 rigthC;
+    Vec3 Up;
 
     rigthC = vec3Cross(camera->front, camera->up);
     Vec3 valueNormal = vec3nNormal(rigthC);
     camera->right = valueNormal;
+    
 
+    Up = vec3Cross(camera->right, camera->front);
+    Vec3 normalizedValue = vec3nNormal(Up);
+    camera->up = normalizedValue;
+    
     //printf("value normal: %f\n", valueNormal.x);
     //printf("value normal: %f\n", valueNormal.y);
     //printf("value normal: %f\n", valueNormal.z);
