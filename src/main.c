@@ -4,6 +4,9 @@
 
 #include "../includes/camera.h"
 #include "../includes/floor.h"
+
+void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera);
+
 int main(){
     
     float FOV = 45.0f;
