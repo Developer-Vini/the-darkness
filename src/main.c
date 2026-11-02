@@ -6,10 +6,10 @@
 #include "../includes/wall.h"
 int main(){
     
-    int ASPECT = 45.0f;
-    int FOV = 1280.0f/720.0f;
-    int NEAR = 0.1f;
-    int FAR = 100.0f;
+    float FOV = 45.0f;
+    float ASPECT = 800.0f/600.0f;
+    float NEAR = 0.1f;
+    float FAR = 100.0f;
     
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
