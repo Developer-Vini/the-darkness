@@ -141,3 +141,18 @@ void cameraGetPerspective(float fov, float aspect, float near, float far, Mat4 r
     result[3][2] = -1;
     result[3][3] = 0;
 }
+
+void mat4Multiply(Mat4 a, Mat4 b, Mat4 result){
+    int i;
+    int j;
+    int k;
+
+    for (i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            result[i][j] = 0;
+            for (k = 0; k < 4; k++){
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
