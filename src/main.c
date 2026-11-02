@@ -88,6 +88,8 @@ int main(){
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+        cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection);
 
         glfwSwapBuffers(window);
