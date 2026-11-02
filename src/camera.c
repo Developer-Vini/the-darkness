@@ -156,3 +156,4 @@ void mat4Multiply(Mat4 a, Mat4 b, Mat4 result){
         }
     }
 }
+
