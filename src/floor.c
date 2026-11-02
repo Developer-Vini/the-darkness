@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <glad/glad.h>
-#include "../includes/wall.h"
+#include "../includes/floor.h"
 #include "../includes/camera.h"
 
 static const float vertices[] = {
@@ -21,7 +21,7 @@ static GLint viewLoc;
 static GLint projectionLoc;
 //static Mat4 matrix;
 
-void initWall(void){
+void initFloor(void){
   const char *vertexShaderSource =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos; \n"
@@ -38,7 +38,7 @@ void initWall(void){
     "out vec4 outColor;\n"
     "void main()\n"
     "{\n"
-    "  outColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "  outColor = vec4(0.18f, 0.18f, 0.2f, 1.0f);\n"
     "}\0";
 
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -107,7 +107,7 @@ void initWall(void){
   glEnableVertexAttribArray(0);
 }
 
-void drawWall(Mat4 model, Mat4 view, Mat4 projection){
+void drawFloor(Mat4 model, Mat4 view, Mat4 projection){
   glUseProgram(shaderProgram);
   glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
@@ -118,7 +118,7 @@ void drawWall(Mat4 model, Mat4 view, Mat4 projection){
 }
 
 
-void destroyWall(void){
+void destroyFloor(void){
   glDeleteBuffers(1, &VBO);
   glDeleteVertexArrays(1, &VAO);
   glDeleteProgram(shaderProgram);

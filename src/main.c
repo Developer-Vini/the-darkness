@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../includes/camera.h"
-#include "../includes/wall.h"
+#include "../includes/floor.h"
 int main(){
     
     float FOV = 45.0f;
@@ -39,7 +39,7 @@ int main(){
 
     glViewport(0, 0, 800, 600);
 
-    initWall(); 
+    initFloor(); 
 
     
     Camera camera = {
@@ -68,13 +68,13 @@ int main(){
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        drawWall(model, view, projection);
+        drawFloor(model, view, projection);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    destroyWall();
+    destroyFloor();
     
     glfwTerminate();
     return 0;
