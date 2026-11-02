@@ -47,9 +47,15 @@ int main(){
         .right = {1.0f, 0.0f, 0.0f},
     };
 
-    Mat4 model;
     Mat4 view;
     Mat4 projection;
+
+    Mat4 model = {
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
+    };
 
 
     cameraGetViewMat(&camera, view);
