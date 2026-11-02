@@ -21,7 +21,7 @@ int main(){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow *window = glfwCreateWindow(800, 600, "tela", NULL, NULL);
-
+    
     if(!window){
         printf("error, window not initialized");
         glfwTerminate();
@@ -34,6 +34,8 @@ int main(){
         printf("failed to initialize GLAD");
         return 1;
     }
+
+    glEnable(GL_DEPTH_TEST);
 
     glViewport(0, 0, 800, 600);
 
@@ -68,7 +70,6 @@ int main(){
 
         drawWall(model, view, projection);
 
-        glEnable(GL_DEPTH_TEST);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
