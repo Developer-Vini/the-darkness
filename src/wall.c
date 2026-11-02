@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <glad/glad.h>
 #include "../includes/wall.h"
+#include "../includes/camera.h"
 
 static const float vertices[] = {
     -0.5f, 0.0f, -0.5f,
@@ -15,14 +16,21 @@ static const float vertices[] = {
 };
 
 static unsigned int VBO, VAO, shaderProgram;
+static GLint modelLoc;
+static GLint viewLoc;
+static GLint projectionLoc;
+static matrix;
 
 void initWall(void){
   const char *vertexShaderSource =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos; \n"
+    "uniform mat4 model;  \n"
+    "uniform mat4 view;  \n"
+    "uniform mat4 projection; \n"
     "void main()\n"
     "{\n"
-    "  gl_Position = vec4(aPos.x, aPos.z,0.0, 1.0);\n"
+    "  gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
     "}\0";
 
     const char *fragmentShaderSource =
@@ -54,7 +62,7 @@ void initWall(void){
 
   glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &sucess);
   if(!sucess){
-    glGetProgramInfoLog(fragmentShader, 512, NULL, infoLog);
+    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
     printf("Fragment shader error:\n%s\n", infoLog);
   }
 
@@ -62,31 +70,46 @@ void initWall(void){
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
   glLinkProgram(shaderProgram);
-
+  
+  modelLoc = glGetUniformLocation(shaderProgram, "model");
+  projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+  viewLoc = glGetUniformLocation(shaderProgram, "view");
+  
+  printf("Model: %d\n", modelLoc);
+  printf("View: %d\n", viewLoc);
+  printf("projection: %d\n", projectionLoc);
+  
+  matrix = (Mat4){
+    {1, 0, 0, 0},
+    {0, 1, 0, 0},
+    {0, 0, 1, 0},
+    {0, 0, 0, 1},
+  };
+  
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &sucess);
   if(!sucess){
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
     printf("shader program error:\n%s\n", infoLog);
   }
-
   
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-
+  
   glGenBuffers(1, &VBO);
   glGenVertexArrays(1, &VAO);
-
+  
   glBindVertexArray(VAO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+  
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
+  
   glEnableVertexAttribArray(0);
 }
 
 void drawWall(void){
   glUseProgram(shaderProgram);
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &matrix[0][0]);
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
   glBindVertexArray(0);

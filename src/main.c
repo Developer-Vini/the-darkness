@@ -35,33 +35,17 @@ int main(){
     glViewport(0, 0, 800, 600);
 
     initWall(); 
-    Mat4 a ={
-        {1, 2, 3, 4},
-        {5, 6, 7, 8},
-        {9, 10, 11, 12},
-        {13, 14, 15, 16}
+
+    Mat4 model;
+    Mat4 view;
+    Mat4 projection;
+
+    Camera camera = {
+        .position = {0.0f, 1.5f, 3.0f},
+        .front = {0.0f, -0.3f, -1.0f},
+        .up = {0.0f, 1.0f, 0.0f},
+        .right = {1.0f, 0.0f, 0.0f},
     };
-
-    Mat4 b = {
-        {2, 0, 0, 0},
-        {0, 2, 0, 0},
-        {0, 0, 2, 0},
-        {0, 0, 0, 2}
-    };
-
-    Mat4 result;
-
-    mat4Multiply(a, b, result);
-
-    int i;
-    int k;
-
-    for(i = 0; i < 4; i++){
-        for(k = 0; k < 4; k++){
-            printf("%8.2f ", result[i][k]);
-        }
-        printf("\n");
-    }
 
     while (!glfwWindowShouldClose(window)){
 
