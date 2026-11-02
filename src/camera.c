@@ -157,3 +157,21 @@ void mat4Multiply(Mat4 a, Mat4 b, Mat4 result){
     }
 }
 
+Vec3 vec3Add(Vec3 a, Vec3 b){
+    Vec3 result;
+    
+    result.y = a.y + b.y;
+    result.z = a.z + b.z;
+    result.x = a.x + b.x;
+
+    return result;
+}
+Vec3 vec3Scal(Vec3 v, float scalar){
+    Vec3 result;
+    
+    result.y = v.y * scalar;
+    result.z = v.z * scalar;
+    result.x = v.x * scalar;
+
+    return result;
+}
