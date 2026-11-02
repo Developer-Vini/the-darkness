@@ -75,6 +75,13 @@ int main(){
         float delta = deltaTime - lastFrame;
 
         lastFrame = deltaTime;
+
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GL_TRUE);
+
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        moveCharacter(1.0f, delta, normalizedFront, &camera);
+
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -91,7 +98,7 @@ int main(){
 
 }
 
-void MoveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera){
+void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera){
     float disctance = speed * deltaTime;
     Vec3 mult = vec3Scal(direction, disctance);
     Vec3 positioUpdate = vec3Add(camera->position, mult);
