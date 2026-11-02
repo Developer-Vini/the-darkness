@@ -107,9 +107,11 @@ void initWall(void){
   glEnableVertexAttribArray(0);
 }
 
-void drawWall(void){
+void drawWall(Mat4 model, Mat4 view, Mat4 projection){
   glUseProgram(shaderProgram);
-  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &matrix[0][0]);
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
+  glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
+  glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
   glBindVertexArray(0);
