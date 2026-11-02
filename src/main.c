@@ -43,7 +43,7 @@ int main(){
 
     
     Camera camera = {
-        .position = {0.0f, 1.5f, 3.0f},
+        .position = {0.0f, 1.0f, 3.0f},
         .front = {0.0f, -0.3f, -1.0f},
         .up = {0.0f, 1.0f, 0.0f},
         .right = {1.0f, 0.0f, 0.0f},

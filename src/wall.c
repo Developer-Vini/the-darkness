@@ -19,7 +19,7 @@ static unsigned int VBO, VAO, shaderProgram;
 static GLint modelLoc;
 static GLint viewLoc;
 static GLint projectionLoc;
-static matrix;
+//static Mat4 matrix;
 
 void initWall(void){
   const char *vertexShaderSource =
@@ -70,6 +70,12 @@ void initWall(void){
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
   glLinkProgram(shaderProgram);
+
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &sucess);
+  if(!sucess){
+    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+    printf("shader program error:\n%s\n", infoLog);
+  }
   
   modelLoc = glGetUniformLocation(shaderProgram, "model");
   projectionLoc = glGetUniformLocation(shaderProgram, "projection");
@@ -79,18 +85,12 @@ void initWall(void){
   printf("View: %d\n", viewLoc);
   printf("projection: %d\n", projectionLoc);
   
-  matrix = (Mat4){
-    {1, 0, 0, 0},
-    {0, 1, 0, 0},
-    {0, 0, 1, 0},
-    {0, 0, 0, 1},
-  };
-  
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &sucess);
-  if(!sucess){
-    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    printf("shader program error:\n%s\n", infoLog);
-  }
+  //matrix = (Mat4){
+  //  {1, 0, 0, 0},
+  //  {0, 1, 0, 0},
+  //  {0, 0, 1, 0},
+  //  {0, 0, 0, 1},
+  //};
   
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
