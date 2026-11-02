@@ -166,6 +166,7 @@ Vec3 vec3Add(Vec3 a, Vec3 b){
 
     return result;
 }
+
 Vec3 vec3Scal(Vec3 v, float scalar){
     Vec3 result;
     
@@ -175,3 +176,4 @@ Vec3 vec3Scal(Vec3 v, float scalar){
 
     return result;
 }
+

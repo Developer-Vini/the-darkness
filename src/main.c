@@ -60,11 +60,21 @@ int main(){
     };
 
 
+    Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
+
+    Vec3 normalizedFront = vec3nNormal(horizontalFront);
+
+
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(FOV, ASPECT, NEAR, FAR, projection);
 
-    while (!glfwWindowShouldClose(window)){
+    float lastFrame = 0.0f;
 
+    while (!glfwWindowShouldClose(window)){
+        float deltaTime = glfwGetTime();
+        float delta = deltaTime - lastFrame;
+
+        lastFrame = deltaTime;
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -79,4 +89,11 @@ int main(){
     glfwTerminate();
     return 0;
 
+}
+
+void MoveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera){
+    float disctance = speed * deltaTime;
+    Vec3 mult = vec3Scal(direction, disctance);
+    Vec3 positioUpdate = vec3Add(camera->position, mult);
+    camera->position = positioUpdate;
 }
