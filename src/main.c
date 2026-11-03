@@ -66,6 +66,8 @@ int main(){
     Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
     Vec3 normalizedFront = vec3nNormal(horizontalFront);
 
+    Vec3 RightStep = { camera.right.x, 0.0f, 0.0f};
+    Vec3 normalizedRight = vec3nNormal(RightStep);
 
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(FOV, ASPECT, NEAR, FAR, projection);
@@ -87,6 +89,10 @@ int main(){
     if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
         Vec3 backwardFront = vec3Scal(normalizedFront, -1.0f);
         moveCharacter(3.0f, delta, backwardFront, &camera);
+    }
+    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+        Vec3 rightInver = vec3Scal(normalizedRight, -1);
+        moveCharacter(3.0f, delta, rightInver, &camera);
     }
 
 
