@@ -5,14 +5,15 @@
 #include "../includes/camera.h"
 #include "../includes/floor.h"
 
+//configs
+#define CAMERA_FOV 45.0f
+#define CAMERA_ASPECT 800.0f / 600.0f
+#define CAMERA_NEAR = 0.1f
+#define CAMERA_FAR = 100.0f
+
 void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera);
 
 int main(){
-    
-    float FOV = 45.0f;
-    float ASPECT = 800.0f/600.0f;
-    float NEAR = 0.1f;
-    float FAR = 100.0f;
     
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
@@ -70,7 +71,7 @@ int main(){
     Vec3 normalizedRight = vec3nNormal(RightStep);
 
     cameraGetViewMat(&camera, view);
-    cameraGetPerspective(FOV, ASPECT, NEAR, FAR, projection);
+    cameraGetPerspective(CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR, projection);
 
     float lastFrame = 0.0f;
 
@@ -122,4 +123,7 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
     Vec3 mult = vec3Scal(direction, disctance);
     Vec3 positioUpdate = vec3Add(camera->position, mult);
     camera->position = positioUpdate;
+}
+void processInput(GLFWwindow *window, float deltaTime, Camera *camera){
+
 }
