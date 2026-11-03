@@ -61,8 +61,8 @@ int main(){
         .firstMouse = 1,
     };
 
-    glfwSetCursorPosCallback(window, mouseCallback);    
     glfwSetWindowUserPointer(window, &camera);
+    glfwSetCursorPosCallback(window, mouseCallback);    
 
 
     Mat4 view;
