@@ -61,7 +61,9 @@ int main(){
         .firstMouse = 1,
     };
 
+    glfwSetCursorPosCallback(window, mouseCallback);    
     glfwSetWindowUserPointer(window, &camera);
+
 
     Mat4 view;
     Mat4 projection;
@@ -137,8 +139,17 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
 
 void mouseCallback(GLFWwindow *window, double xpos, double ypos){
     Camera *camera = glfwGetWindowUserPointer(window);
-    glfwSetCursorPosCallback(window, mouseCallback);
 
-    
+    if(camera->firstMouse){
+        camera->lastX = (float)xpos;
+        camera->lastY = (float)ypos;
+        camera->firstMouse = 0;
+    }
+
+    float offsetX = (float)xpos - camera->lastX;
+    float offsetY = camera->lastY - (float)ypos;
+
+    camera->lastX = (float)xpos;
+    camera->lastY = (float)ypos;    
 
 }
