@@ -64,7 +64,6 @@ int main(){
 
 
     Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
-
     Vec3 normalizedFront = vec3nNormal(horizontalFront);
 
 
@@ -82,8 +81,14 @@ int main(){
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        moveCharacter(1.0f, delta, normalizedFront, &camera);
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+        moveCharacter(3.0f, delta, normalizedFront, &camera);
+    }
+    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+        Vec3 backwardFront = vec3Scal(normalizedFront, -1.0f);
+        moveCharacter(3.0f, delta, backwardFront, &camera);
+    }
+
 
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
