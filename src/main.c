@@ -11,7 +11,9 @@
 #define CAMERA_NEAR 0.1f
 #define CAMERA_FAR 100.0f
 
+
 void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera);
+void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 
 int main(){
     
@@ -52,7 +54,14 @@ int main(){
         .front = {0.0f, -0.3f, -1.0f},
         .up = {0.0f, 1.0f, 0.0f},
         .right = {1.0f, 0.0f, 0.0f},
+        .pitch = 0.0f,
+        .yaw = -90.0f,
+        .lastX = 400.0f,
+        .lastY = 300.0f,
+        .firstMouse = 1,
     };
+
+    glfwSetWindowUserPointer(window, &camera);
 
     Mat4 view;
     Mat4 projection;
@@ -124,4 +133,12 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
     Vec3 mult = vec3Scal(direction, disctance);
     Vec3 positioUpdate = vec3Add(camera->position, mult);
     camera->position = positioUpdate;
+}
+
+void mouseCallback(GLFWwindow *window, double xpos, double ypos){
+    Camera *camera = glfwGetWindowUserPointer(window);
+    glfwSetCursorPosCallback(window, mouseCallback);
+
+    
+
 }

@@ -12,6 +12,13 @@ typedef struct{
     Vec3 front;
     Vec3 up;
     Vec3 right;
+
+    float yaw;
+    float pitch;
+    
+    float lastX;
+    float lastY;
+    int firstMouse;
 } Camera;
 
 typedef float Mat4[4][4];
