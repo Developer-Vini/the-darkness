@@ -67,7 +67,7 @@ int main(){
     Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
     Vec3 normalizedFront = vec3nNormal(horizontalFront);
 
-    Vec3 RightStep = { camera.right.x, 0.0f, 0.0f};
+    Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
     Vec3 normalizedRight = vec3nNormal(RightStep);
 
     cameraGetViewMat(&camera, view);
