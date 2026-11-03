@@ -158,4 +158,15 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos){
     offsetX = offsetX * sensi;
     offsetY = offsetY * sensi;
 
+    camera->yaw = camera->yaw + offsetX;
+    camera->pitch = camera->pitch + offsetY;
+
+    if(camera->pitch >89.0f){
+        camera->pitch = 89.0f;
+    }
+    if(camera->pitch < -89.0f){
+        camera->pitch = -89.0f;
+    }
+
+
 }
