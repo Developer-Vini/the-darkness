@@ -45,6 +45,7 @@ int main(){
 
     initFloor(); 
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     Camera camera = {
         .position = {0.0f, 1.5f, 3.0f},
