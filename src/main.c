@@ -138,6 +138,9 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
 }
 
 void mouseCallback(GLFWwindow *window, double xpos, double ypos){
+
+    float sensi = 0.1f;
+
     Camera *camera = glfwGetWindowUserPointer(window);
 
     if(camera->firstMouse){
@@ -151,5 +154,8 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos){
 
     camera->lastX = (float)xpos;
     camera->lastY = (float)ypos;    
+
+    offsetX = offsetX * sensi;
+    offsetY = offsetY * sensi;
 
 }
