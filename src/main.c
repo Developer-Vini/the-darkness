@@ -94,6 +94,9 @@ int main(){
         Vec3 rightInver = vec3Scal(normalizedRight, -1);
         moveCharacter(3.0f, delta, rightInver, &camera);
     }
+    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
+        moveCharacter(3.0f, delta, normalizedRight, &camera);
+    }
 
 
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
