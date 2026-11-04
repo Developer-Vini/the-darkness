@@ -43,7 +43,7 @@ int main(){
     glViewport(0, 0, 800, 600);
 
     initFloor(); 
-
+    
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     Camera camera = {
