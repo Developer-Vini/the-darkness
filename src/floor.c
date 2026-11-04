@@ -28,13 +28,17 @@ void initFloor(void){
     "uniform mat4 model;  \n"
     "uniform mat4 view;  \n"
     "uniform mat4 projection; \n"
+    "out vec3 FragPos; \n"
     "void main()\n"
     "{\n"
-    "  gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
+    "  vec4 worldPosition = model * vec4(aPos, 1.0);\n"
+    "  FragPos = worldPosition.xyz;\n"
+    "  gl_Position = projection * view * worldPosition;\n"
     "}\0";
 
     const char *fragmentShaderSource =
     "#version 330 core\n"
+    "in vec3 FragPos;\n"
     "out vec4 outColor;\n"
     "void main()\n"
     "{\n"
