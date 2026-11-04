@@ -28,22 +28,18 @@ int main(){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow *window = glfwCreateWindow(800, 600, "tela", NULL, NULL);
-    
     if(!window){
         printf("error, window not initialized");
         glfwTerminate();
         return 1;
     }
-
     glfwMakeContextCurrent(window);
-
     if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)){
         printf("failed to initialize GLAD");
         return 1;
     }
 
     glEnable(GL_DEPTH_TEST);
-
     glViewport(0, 0, 800, 600);
 
     initFloor(); 
@@ -65,7 +61,6 @@ int main(){
     glfwSetWindowUserPointer(window, &camera);
     glfwSetCursorPosCallback(window, mouseCallback);    
 
-
     Mat4 view;
     Mat4 projection;
 
@@ -86,30 +81,30 @@ int main(){
         float delta = deltaTime - lastFrame;
 
         lastFrame = deltaTime;
-    Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
-    Vec3 normalizedFront = vec3nNormal(horizontalFront);
+        
+        Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
+        Vec3 normalizedFront = vec3nNormal(horizontalFront);
 
-    Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
-    Vec3 normalizedRight = vec3nNormal(RightStep);
+        Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
+        Vec3 normalizedRight = vec3nNormal(RightStep);
 
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
+        if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, GL_TRUE);
 
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        moveCharacter(3.0f, delta, normalizedFront, &camera);
-    }
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        Vec3 backwardFront = vec3Scal(normalizedFront, -1.0f);
-        moveCharacter(3.0f, delta, backwardFront, &camera);
-    }
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        Vec3 rightInver = vec3Scal(normalizedRight, -1);
-        moveCharacter(3.0f, delta, rightInver, &camera);
-    }
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        moveCharacter(3.0f, delta, normalizedRight, &camera);
-    }
-
+        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+            moveCharacter(3.0f, delta, normalizedFront, &camera);
+        }
+        if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+            Vec3 backwardFront = vec3Scal(normalizedFront, -1.0f);
+            moveCharacter(3.0f, delta, backwardFront, &camera);
+        }
+        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+            Vec3 rightInver = vec3Scal(normalizedRight, -1);
+            moveCharacter(3.0f, delta, rightInver, &camera);
+        }
+        if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
+            moveCharacter(3.0f, delta, normalizedRight, &camera);
+        }
 
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -121,12 +116,9 @@ int main(){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    destroyFloor();
-    
+    destroyFloor();    
     glfwTerminate();
     return 0;
-
 }
 
 void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera){
