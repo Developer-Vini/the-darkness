@@ -117,3 +117,15 @@ void drawCube(Mat4 model, Mat4 view, Mat4 projection,unsigned int shaderProgram)
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
+void mat4Translate(Mat4 result, Mat4 matrix, Vec3 position){
+
+    for(int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            result[i][j] = matrix[i][j];
+        }
+    }
+
+    result[0][3]  +=  position.x;
+    result[1][3]  +=  position.y;
+    result[2][3]  +=  position.z;
+}

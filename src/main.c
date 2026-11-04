@@ -72,6 +72,12 @@ int main(){
         {0, 0, 1, 0},
         {0, 0, 0, 1}
     };
+    Mat4 translateModel;
+    Vec3 r = {
+        20.0f, 0.0f, 0.0f
+    };
+
+    mat4Translate(translateModel, model, r);
 
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR, projection);
@@ -116,6 +122,7 @@ int main(){
         drawFloor(model, view, projection, camera.position);
 
         drawCube(model, view, projection, shaderProgram);
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
