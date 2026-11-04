@@ -63,8 +63,9 @@ Vec3 vec3Cross(Vec3 a, Vec3 b){
 void cameraUpdateVectors(Camera *camera){
     Vec3 rigthC;
     Vec3 Up;
-
-    rigthC = vec3Cross(camera->front, camera->up);
+    Vec3 worldUp = {0.0f, 1.0f, 0.0f};
+    
+    rigthC = vec3Cross(camera->front, worldUp);
     Vec3 valueNormal = vec3nNormal(rigthC);
     camera->right = valueNormal;
     
