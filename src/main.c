@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "math.h"
 
 #include "../includes/camera.h"
 #include "../includes/floor.h"
@@ -138,11 +139,14 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
 }
 
 void mouseCallback(GLFWwindow *window, double xpos, double ypos){
+    Camera *camera = glfwGetWindowUserPointer(window);
+    
+    float cameraX;
+    float cameraY;
+    float cameraZ;
 
     float sensi = 0.1f;
-
-    Camera *camera = glfwGetWindowUserPointer(window);
-
+    
     if(camera->firstMouse){
         camera->lastX = (float)xpos;
         camera->lastY = (float)ypos;
@@ -157,16 +161,29 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos){
 
     offsetX = offsetX * sensi;
     offsetY = offsetY * sensi;
-
+    
     camera->yaw = camera->yaw + offsetX;
     camera->pitch = camera->pitch + offsetY;
-
     if(camera->pitch >89.0f){
         camera->pitch = 89.0f;
     }
     if(camera->pitch < -89.0f){
         camera->pitch = -89.0f;
     }
+    
+    float yawRad = camera->yaw * M_PI / 180.0f;
+    float pitchRad = camera->pitch * M_PI / 180.0f;    
 
+    cameraX = camera->front.x = cosf(yawRad) * cosf(pitchRad);
+    cameraY = camera->front.y = sinf(pitchRad);
+    cameraZ = camera->front.z = sinf(yawRad) * cosf(pitchRad);
+
+    Vec3 movimentCamera = {cameraX, cameraY, cameraZ};
+
+    movimentCamera = vec3nNormal(movimentCamera);
+
+    camera->front = movimentCamera;
+
+    cameraUpdateVectors(camera);
 
 }
