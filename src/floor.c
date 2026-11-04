@@ -19,6 +19,7 @@ static unsigned int VBO, VAO, shaderProgram;
 static GLint modelLoc;
 static GLint viewLoc;
 static GLint projectionLoc;
+static GLint cameraPos;
 //static Mat4 matrix;
 
 void initFloor(void){
@@ -39,10 +40,16 @@ void initFloor(void){
     const char *fragmentShaderSource =
     "#version 330 core\n"
     "in vec3 FragPos;\n"
+    "uniform vec3 cameraPos;\n"
+    "vec3 fogColor = vec3(0.18, 0.18, 0.2);\n"
+    "vec3 floorColor = vec3(0.12, 0.14, 0.17);\n"
     "out vec4 outColor;\n"
     "void main()\n"
     "{\n"
-    "  outColor = vec4(0.18f, 0.18f, 0.2f, 1.0f);\n"
+    "  float distancia = distance(FragPos, cameraPos);\n"
+    "  float fragFactor = smoothstep(5.0, 20.0, distancia);\n"
+    "  vec3 mixColor = mix(floorColor, fogColor, distancia);\n"
+    "  outColor = vec4(mixColor, 1.0);\n"
     "}\0";
 
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -84,7 +91,8 @@ void initFloor(void){
   modelLoc = glGetUniformLocation(shaderProgram, "model");
   projectionLoc = glGetUniformLocation(shaderProgram, "projection");
   viewLoc = glGetUniformLocation(shaderProgram, "view");
-  
+  cameraPos = glGetUniformLocation(shaderProgram, "cameraPos");
+
   printf("Model: %d\n", modelLoc);
   printf("View: %d\n", viewLoc);
   printf("projection: %d\n", projectionLoc);
@@ -111,12 +119,14 @@ void initFloor(void){
   glEnableVertexAttribArray(0);
 }
 
-void drawFloor(Mat4 model, Mat4 view, Mat4 projection){
+void drawFloor(Mat4 model, Mat4 view, Mat4 projection, Vec3 cameraPosition){
   glUseProgram(shaderProgram);
   glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
   glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
   glBindVertexArray(VAO);
+
+  glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
   glBindVertexArray(0);
 }

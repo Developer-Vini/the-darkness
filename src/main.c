@@ -111,7 +111,7 @@ int main(){
 
 
         cameraGetViewMat(&camera, view);
-        drawFloor(model, view, projection);
+        drawFloor(model, view, projection, camera.position);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
