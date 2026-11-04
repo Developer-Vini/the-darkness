@@ -76,13 +76,6 @@ int main(){
         {0, 0, 0, 1}
     };
 
-
-    Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
-    Vec3 normalizedFront = vec3nNormal(horizontalFront);
-
-    Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
-    Vec3 normalizedRight = vec3nNormal(RightStep);
-
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR, projection);
 
@@ -93,6 +86,11 @@ int main(){
         float delta = deltaTime - lastFrame;
 
         lastFrame = deltaTime;
+    Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
+    Vec3 normalizedFront = vec3nNormal(horizontalFront);
+
+    Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
+    Vec3 normalizedRight = vec3nNormal(RightStep);
 
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
