@@ -15,7 +15,7 @@ static const float vertices[] = {
     -10.0f, 0.0f,  10.0f
 };
 
-static unsigned int VBO, VAO, shaderProgram;
+static unsigned int VBO, VAO; unsigned int shaderProgram;
 static GLint modelLoc;
 static GLint viewLoc;
 static GLint projectionLoc;

@@ -1,5 +1,5 @@
 #include <glad/glad.h>
-#include "../includes/camera.h"
+#include "../includes/object.h"
 #include <stdio.h>
 
 const float vertCubes[] = {

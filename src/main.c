@@ -5,6 +5,7 @@
 
 #include "../includes/camera.h"
 #include "../includes/floor.h"
+#include "../includes/object.h"
 
 //configs
 #define CAMERA_FOV 45.0f
@@ -43,7 +44,8 @@ int main(){
     glViewport(0, 0, 800, 600);
 
     initFloor(); 
-    
+    initCube(shaderProgram);
+
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     Camera camera = {
@@ -113,6 +115,7 @@ int main(){
         cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection, camera.position);
 
+        drawCube(model, view, projection, shaderProgram);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
