@@ -74,7 +74,7 @@ int main(){
     };
     Mat4 translateModel;
     Vec3 r = {
-        20.0f, 0.0f, 0.0f
+        1.0f, 0.0f, 0.0f
     };
 
     mat4Translate(translateModel, model, r);
@@ -121,8 +121,8 @@ int main(){
         cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection, camera.position);
 
-        drawCube(model, view, projection, shaderProgram);
-        
+        drawCube(translateModel, view, projection, shaderProgram);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
