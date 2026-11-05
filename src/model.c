@@ -16,7 +16,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     unsigned int indexCount;
 
 
-    for(unsigned int i = 0; i < aiMeshData->mNunFaces; i++){
+    for(unsigned int i = 0; i < aiMeshData->mNumFaces; i++){
         indexCount = indexCount + aiMeshData->mFaces[i].mNumIndices;
     }
 
@@ -29,7 +29,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
         return 1;
     }
 
-    for(unsigned int = 0; i < vertexCount; i++){
+    for(unsigned int i = 0; i < vertexCount; i++){
         struct aiVector3D position = aiMeshData->mVertices[i];
         struct aiVector3D normal = aiMeshData->mNormals[i];
         struct aiVector3D uv = {0};
