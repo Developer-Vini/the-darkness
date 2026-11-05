@@ -18,4 +18,6 @@ typedef struct {
     unsigned int meshCount;
 } Model;
 
+int modelLoad(Model* model, const char* path);
+
 #endif
