@@ -92,6 +92,8 @@ int main(){
     if(!modelLoad(&caixa, "assets/models/weapon/cod_arma.glb")){
         printf("falha oa carregar");
     }
+
+    cameraGetWeapon
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
         float delta = deltaTime - lastFrame;
