@@ -13,14 +13,14 @@
 static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
-    unsigned int indexCount;
+    unsigned int indexCount = 0;
 
 
     for(unsigned int i = 0; i < aiMeshData->mNumFaces; i++){
         indexCount = indexCount + aiMeshData->mFaces[i].mNumIndices;
     }
 
-    float* vertices = malloc(vertexCount * sizeof(float));
+    float* vertices = malloc(vertexCount * 8 * sizeof(float));
     unsigned int* indices = malloc(indexCount * sizeof(unsigned int));
 
     if(!vertices || !indices){
