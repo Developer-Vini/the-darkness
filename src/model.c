@@ -123,3 +123,11 @@ int modelLoad(Model* model, const char* path){
     return 1;
 
 }
+
+void modelDraw(const Model* model){
+    for(unsigned int i = 0; i < model->meshCount; i++){
+        glBindVertexArray(model->mashes[i].VAO);
+        glDrawElements(GL_TRIANGLES, model->mashes[i].indexCount, GL_UNSIGNED_INT, 0);
+    }
+    glBindVertexArray(0);
+}
