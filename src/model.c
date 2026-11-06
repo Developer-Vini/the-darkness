@@ -108,6 +108,18 @@ int modelLoad(Model* model, const char* path){
         model->meshCount = 0;
         return 0;
     }
-    
+
+    for(unsigned int i = 0; i < model->meshCount; i++){
+        if(!processMesh(model->mashes[i],  scene->mMeshes[i])){
+            printf("erro ao carregar mesh %u\n", i);
+            aiReleaseImport(scene);
+            modelDestroy(model);
+            return 0;
+        }
+    }
+
+    aiRelaseImport(scene);
+    printf("modelo carregado!");
+    return 1;
 
 }
