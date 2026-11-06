@@ -73,27 +73,27 @@ int main(){
         {0, 0, 1, 0},
         {0, 0, 0, 1}
     };
-    Mat4 translateModel;
-    Vec3 r = {
-        1.0f, 0.0f, 0.0f
+
+    
+    Mat4 wModel = {
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
     };
 
-    mat4Translate(translateModel, model, r);
-
-    Vec3 caixaPosiaco = {3.0f, 0.0f, -5.0f};
-    mat4Translate(translateModel, model, caixaPosiaco);
-
+    
+    
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR, projection);
 
     float lastFrame = 0.0f;
-
+    
     Model caixa;
     if(!modelLoad(&caixa, "assets/models/weapon/cod_arma.glb")){
         printf("falha oa carregar");
     }
-
-    cameraGetWeapon
+    
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
         float delta = deltaTime - lastFrame;
@@ -102,13 +102,13 @@ int main(){
         
         Vec3 horizontalFront = {camera.front.x, 0.0f, camera.front.z};
         Vec3 normalizedFront = vec3nNormal(horizontalFront);
-
+        
         Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
         Vec3 normalizedRight = vec3nNormal(RightStep);
 
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
-
+            
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
             moveCharacter(3.0f, delta, normalizedFront, &camera);
         }
@@ -126,13 +126,16 @@ int main(){
 
         glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+        
+        
         cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection, camera.position);
 
+        Vec3 weapon = cameraGetWeaponPosition(&camera, 0.35f, -0.3f, 0.7f);
+        mat4Translate(wModel, model, weapon);
+        
         //drawCube(translateModel, view, projection, shaderProgram);
-        modelDraw(&caixa, shaderProgram, translateModel, view, projection, camera.position);
+        modelDraw(&caixa, shaderProgram, wModel, view, projection, camera.position);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
