@@ -20,6 +20,7 @@ typedef struct {
 
 int modelLoad(Model* model, const char* path);
 void modelDraw(const Model* model);
+void modelDestroy(Model* model);
 
 
 #endif
