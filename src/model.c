@@ -50,7 +50,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
         vertices[offset + 5] = normal.z;
         
         vertices[offset + 6] = uv.x;
-        vertices[offset + 6] = uv.y;
+        vertices[offset + 7] = uv.y;
 
     }
 
