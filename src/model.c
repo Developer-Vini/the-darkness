@@ -90,3 +90,24 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     mesh->indexCount = indexCount;
     return 1;
 }
+
+int modelLoad(Model* model, const char* path){
+    memset(model, 0, sizeof(Model));
+
+    const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIndenticalVertices | aiProcess_FlipUVs);
+    
+    if(!scene || !scene->mRootNode){
+        printf("erro ao importar: %s\n", aiGetErrorString());
+    }
+    
+    model->meshCount = scene->mNumMeshes;
+    model->meshes = calloc(model->meshCount, sizeof(Mesh));
+
+    if(!model->meshes){
+        aiReleaseImport(scene);
+        model->meshCount = 0;
+        return 0;
+    }
+    
+
+}
