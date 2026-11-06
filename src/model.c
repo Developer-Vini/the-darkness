@@ -97,6 +97,11 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
 
 int modelLoad(Model* model, const char* path){
     memset(model, 0, sizeof(Model));
+    
+    GLint modelLoc;
+    GLint viewLoc;
+    GLint projectionLoc;
+    GLint cameraPos;
 
     const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs);
     
@@ -108,14 +113,15 @@ int modelLoad(Model* model, const char* path){
     model->meshCount = scene->mNumMeshes;
     model->mashes = calloc(model->meshCount, sizeof(Mesh));
     
-    if(!model->mashes){
-        aiReleaseImport(scene);
-        model->meshCount = 0;
-        return 0;
-    }
     if(scene->mNumMeshes == 0){
         printf("model sme meh");
         aiReleaseImport(scene);
+        return 0;
+    }
+
+    if(!model->mashes){
+        aiReleaseImport(scene);
+        model->meshCount = 0;
         return 0;
     }
 
@@ -135,6 +141,20 @@ int modelLoad(Model* model, const char* path){
 }
 
 void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 view, Mat4 projection, Vec3 cameraPosition ){
+    
+    glUseProgram(shaderProgram);
+
+    modelLoc = glGetUniformLocation(shaderProgram, "model");
+    viewLoc = glGetUniformLocation(shaderProgram, "view");
+    projectionLoc =  glGetUniformLocation(shaderProgram, "projection");
+    cameraPos = glGetUniformLocation(shaderProgram, "cameraPos");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &modelMatrix[0][0]);
+    glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);   
+    glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
+
+    glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
     for(unsigned int i = 0; i < model->meshCount; i++){
         glBindVertexArray(model->mashes[i].VAO);
         glDrawElements(GL_TRIANGLES, model->mashes[i].indexCount, GL_UNSIGNED_INT, 0);
