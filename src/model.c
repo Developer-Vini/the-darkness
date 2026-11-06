@@ -94,7 +94,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
 int modelLoad(Model* model, const char* path){
     memset(model, 0, sizeof(Model));
 
-    const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIndenticalVertices | aiProcess_FlipUVs);
+    const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs);
     
     if(!scene || !scene->mRootNode){
         printf("erro ao importar: %s\n", aiGetErrorString());
@@ -110,7 +110,7 @@ int modelLoad(Model* model, const char* path){
     }
 
     for(unsigned int i = 0; i < model->meshCount; i++){
-        if(!processMesh(model->mashes[i],  scene->mMeshes[i])){
+        if(processMesh(model->mashes[i],  scene->mMeshes[i])){
             printf("erro ao carregar mesh %u\n", i);
             aiReleaseImport(scene);
             modelDestroy(model);
