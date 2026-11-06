@@ -10,6 +10,7 @@
 
 //I wrote this code along with a tutorial (it was written in C++, and I had to translate it in my own way). I wrote in English because it's important and I need you all to know, haha.
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
+
 static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
@@ -34,7 +35,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
         struct aiVector3D normal = aiMeshData->mNormals[i];
         struct aiVector3D uv = {0};
 
-        if(!aiMeshData->mTextureCoords[0]){
+        if(aiMeshData->mTextureCoords[0]){
             uv = aiMeshData->mTextureCoords[0][i];
         }
 
@@ -98,6 +99,7 @@ int modelLoad(Model* model, const char* path){
     
     if(!scene || !scene->mRootNode){
         printf("erro ao importar: %s\n", aiGetErrorString());
+        return 0;
     }
     
     model->meshCount = scene->mNumMeshes;
