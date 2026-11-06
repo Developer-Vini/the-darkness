@@ -103,14 +103,14 @@ int modelLoad(Model* model, const char* path){
     model->meshCount = scene->mNumMeshes;
     model->meshes = calloc(model->meshCount, sizeof(Mesh));
 
-    if(!model->meshes){
+    if(!model->mashes){
         aiReleaseImport(scene);
         model->meshCount = 0;
         return 0;
     }
 
     for(unsigned int i = 0; i < model->meshCount; i++){
-        if(processMesh(model->mashes[i],  scene->mMeshes[i])){
+        if(!processMesh(model->meshes[i],  scene->mMeshes[i])){
             printf("erro ao carregar mesh %u\n", i);
             aiReleaseImport(scene);
             modelDestroy(model);
@@ -118,7 +118,7 @@ int modelLoad(Model* model, const char* path){
         }
     }
 
-    aiRelaseImport(scene);
+    aiReleaseImport(scene);
     printf("modelo carregado!");
     return 1;
 
@@ -126,20 +126,20 @@ int modelLoad(Model* model, const char* path){
 
 void modelDraw(const Model* model){
     for(unsigned int i = 0; i < model->meshCount; i++){
-        glBindVertexArray(model->mashes[i].VAO);
-        glDrawElements(GL_TRIANGLES, model->mashes[i].indexCount, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(model->meshes[i].VAO);
+        glDrawElements(GL_TRIANGLES, model->meshes[i].indexCount, GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
 }
 
 void modelDestroy(Model* model){
     for(unsigned int i = 0; i < model->meshCount; i++){
-        glDeleteVertexArrays(1, &model->mashes[i].VAO);
-        glDeleteBuffers(1, &model->mashes[i].VBO);
-        glDeleteBuffers(1, &model->mashes[i].EBO);
+        glDeleteVertexArrays(1, &model->meshes[i].VAO);
+        glDeleteBuffers(1, &model->meshes[i].VBO);
+        glDeleteBuffers(1, &model->meshes[i].EBO);
     }
-    free(model->mashes);
+    free(model->meshes);
 
-    model->mashes = NULL;
+    model->meshes = NULL;
     model->meshCount = 0;
 }
