@@ -19,5 +19,7 @@ typedef struct {
 } Model;
 
 int modelLoad(Model* model, const char* path);
+void modelDraw(const Model* model);
+
 
 #endif
