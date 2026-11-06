@@ -6,6 +6,7 @@
 #include "../includes/camera.h"
 #include "../includes/floor.h"
 #include "../includes/object.h"
+#include "../includes/model.h"
 
 //configs
 #define CAMERA_FOV 45.0f
@@ -84,6 +85,10 @@ int main(){
 
     float lastFrame = 0.0f;
 
+    Model caixa;
+    if(!modelLoad(&caixa, "assets/models/crate/wooden-crate.obj")){
+        printf("falha oa carregar");
+    }
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
         float delta = deltaTime - lastFrame;
@@ -121,8 +126,8 @@ int main(){
         cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection, camera.position);
 
-        drawCube(translateModel, view, projection, shaderProgram);
-
+        //drawCube(translateModel, view, projection, shaderProgram);
+        modelDraw(&caixa);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

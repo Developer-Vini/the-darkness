@@ -19,7 +19,7 @@ typedef struct {
 } Model;
 
 int modelLoad(Model* model, const char* path);
-void modelDraw(const Model* model);
+void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 view, Mat4 projection, Vec3 cameraPosition);
 void modelDestroy(Model* model);
 
 

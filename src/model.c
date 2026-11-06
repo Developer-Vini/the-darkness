@@ -134,7 +134,7 @@ int modelLoad(Model* model, const char* path){
 
 }
 
-void modelDraw(const Model* model){
+void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 view, Mat4 projection, Vec3 cameraPosition ){
     for(unsigned int i = 0; i < model->meshCount; i++){
         glBindVertexArray(model->mashes[i].VAO);
         glDrawElements(GL_TRIANGLES, model->mashes[i].indexCount, GL_UNSIGNED_INT, 0);
