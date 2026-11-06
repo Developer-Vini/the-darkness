@@ -131,3 +131,15 @@ void modelDraw(const Model* model){
     }
     glBindVertexArray(0);
 }
+
+void modelDestroy(Model* model){
+    for(unsigned int i = 0; i < model->meshCount; i++){
+        glDeleteVertexArrays(1, &model->mashes[i].VAO);
+        glDeleteBuffers(1, &model->mashes[i].VBO);
+        glDeleteBuffers(1, &model->mashes[i].EBO);
+    }
+    free(model->mashes);
+
+    model->mashes = NULL;
+    model->meshCount = 0;
+}
