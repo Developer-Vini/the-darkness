@@ -27,7 +27,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     if(!vertices || !indices){
         free(vertices);
         free(indices);
-        return 1;
+        return 0;
     }
 
     for(unsigned int i = 0; i < vertexCount; i++){
@@ -79,7 +79,10 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(0);
+   
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3*sizeof(float)));
+   glEnableVertexAttribArray(1); 
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
@@ -102,17 +105,22 @@ int modelLoad(Model* model, const char* path){
         return 0;
     }
     
-    model->meshCount = scene->mNummashes;
+    model->meshCount = scene->mNumMeshes;
     model->mashes = calloc(model->meshCount, sizeof(Mesh));
-
+    
     if(!model->mashes){
         aiReleaseImport(scene);
         model->meshCount = 0;
         return 0;
     }
+    if(scene->mNumMeshes == 0){
+        printf("model sme meh");
+        aiReleaseImport(scene);
+        return 0;
+    }
 
     for(unsigned int i = 0; i < model->meshCount; i++){
-        if(!processMesh(model->mashes[i],  scene->mmashes[i])){
+        if(!processMesh(&model->mashes[i],  scene->mMeshes[i])){
             printf("erro ao carregar mesh %u\n", i);
             aiReleaseImport(scene);
             modelDestroy(model);
