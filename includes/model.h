@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include <glad/glad.h>
+#include "camera.h"
 
 //preciso do vao pra guardar info, ebo guarda as vertices e vbo guardar os indice.
 //isso aqui eu to fazendo de um tutorial, nao me lembrava mais disso hkakak

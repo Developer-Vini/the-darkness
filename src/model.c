@@ -98,11 +98,6 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
 int modelLoad(Model* model, const char* path){
     memset(model, 0, sizeof(Model));
     
-    GLint modelLoc;
-    GLint viewLoc;
-    GLint projectionLoc;
-    GLint cameraPos;
-
     const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs);
     
     if(!scene || !scene->mRootNode){
@@ -142,6 +137,12 @@ int modelLoad(Model* model, const char* path){
 
 void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 view, Mat4 projection, Vec3 cameraPosition ){
     
+        GLint modelLoc;
+    GLint viewLoc;
+    GLint projectionLoc;
+    GLint cameraPos;
+
+
     glUseProgram(shaderProgram);
 
     modelLoc = glGetUniformLocation(shaderProgram, "model");

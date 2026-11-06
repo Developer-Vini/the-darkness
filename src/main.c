@@ -80,13 +80,16 @@ int main(){
 
     mat4Translate(translateModel, model, r);
 
+    Vec3 caixaPosiaco = {3.0f, 0.0f, -5.0f};
+    mat4Translate(translateModel, model, caixaPosiaco);
+
     cameraGetViewMat(&camera, view);
     cameraGetPerspective(CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR, projection);
 
     float lastFrame = 0.0f;
 
     Model caixa;
-    if(!modelLoad(&caixa, "assets/models/crate/wooden-crate.obj")){
+    if(!modelLoad(&caixa, "assets/models/weapon/cod_arma.glb")){
         printf("falha oa carregar");
     }
     while (!glfwWindowShouldClose(window)){
@@ -127,7 +130,7 @@ int main(){
         drawFloor(model, view, projection, camera.position);
 
         //drawCube(translateModel, view, projection, shaderProgram);
-        modelDraw(&caixa);
+        modelDraw(&caixa, shaderProgram, translateModel, view, projection, camera.position);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

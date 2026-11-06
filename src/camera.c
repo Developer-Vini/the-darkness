@@ -178,3 +178,14 @@ Vec3 vec3Scal(Vec3 v, float scalar){
     return result;
 }
 
+Vec3 cameraGetWeaponPosition(Camera *camera, float v1, float v2, float v3){
+    Vec3 scaleRight = vec3Scal(camera->right, v1);
+    Vec3 scaleUp = vec3Scal(camera->up, v2);
+    Vec3 scaleFront = vec3Scal(camera->front, v3);
+
+    Vec3 addTwo = vec3Add(scaleRight, scaleUp);
+    Vec3 addOne = vec3Add(addTwo, scaleFront);
+    Vec3 armaPosition = vec3Add(camera->position, addOne);
+
+    return armaPosition;
+}
