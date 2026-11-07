@@ -15,6 +15,7 @@
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
 
 GLuint initModelShader(void){
+    GLuint modelShaderProgram;
  const char *vertexShaderSource =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos; \n"
@@ -39,6 +40,42 @@ GLuint initModelShader(void){
     "  outColor = texture(modelTexture, texCoord);\n"
     "}\0";
 
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+
+    glCompileShader(vertexShader);
+    glCompileShader(fragmentShader);
+
+    int sucess;
+    char infoLog[512];
+
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &sucess);
+    if (!sucess){
+      glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+      printf("ERROR! Compilation failed:\n%s\n", infoLog);
+    } 
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &sucess);
+    if(!sucess){
+      glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+      printf("Fragment shader error:\n%s\n", infoLog);
+    }
+
+    modelShaderProgram = glCreateProgram();
+    glAttachShader(modelShaderProgram, vertexShader);
+    glAttachShader(modelShaderProgram, fragmentShader);
+    glLinkProgram(modelShaderProgram);
+
+    glGetProgramiv(modelShaderProgram, GL_LINK_STATUS, &sucess);
+    if(!sucess){
+      glGetProgramInfoLog(modelShaderProgram, 512, NULL, infoLog);
+      printf("shader program error:\n%s\n", infoLog);
+    }
+
+    glDeleteShader(modelShaderProgram);
 }
 
 
