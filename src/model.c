@@ -14,6 +14,24 @@
 //I wrote this code along with a tutorial (it was written in C++, and I had to translate it in my own way). I wrote in English because it's important and I need you all to know, haha.
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
 
+GLuint initModelShader(void){
+ const char *vertexShaderSource =
+    "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos; \n"
+    //"layout (location = 1) in vec3 aNormal; \n"
+    "layout (location = 2) in vec2 aTexCoord; \n"
+    "uniform mat4 model;  \n"
+    "uniform mat4 view;  \n"
+    "uniform mat4 projection; \n"
+    "out vec2 TexCoord; \n"
+    "void main()\n"
+    "{\n"
+    "  TexCoord = aTexCoord;\n"    
+    "  gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
+    "}\0";
+}
+
+
 GLuint loadTexture(const unsigned char* image, int w, int h, int channels){
     GLuint texture;
 
