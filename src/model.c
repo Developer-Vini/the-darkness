@@ -114,12 +114,18 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
 
     aiGetMaterialTexture(material, aiTextureType_DIFFUSE, 0, &texturePath, NULL,  NULL,  NULL,  NULL,  NULL,  NULL);    
     
-    if(sscanf(texturePath.data, "*%u", textureIndex) == 1){
-        const struct aiTexture* texture = scene->mTextures[textureIndex];
+    if(sscanf(texturePath.data, "*%u", &textureIndex) == 1){
+        const struct aiTexture* texture = NULL;
+        if(textureIndex < scene->mNumTextures){
+            texture = scene->mTextures[textureIndex];
+        }
 
         int w, h, channels;
 
-        unsigned char* image = stbi_load_from_memory((const unsigned char*)texture->pcData, texture->mWidth, &w, &h, &channels, 0);
+        unsigned char* image = NULL;
+        if(texture != NULL){
+            image = stbi_load_from_memory((const unsigned char*)texture->pcData, texture->mWidth, &w, &h, &channels, 0);
+        }
     
         if(image){
             mesh->texture = loadTexture(image, w, h, channels);
@@ -293,7 +299,7 @@ void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 
     GLint viewLoc;
     GLint projectionLoc;
     GLint cameraPos;
-
+    GLint textureLoc;
 
     glUseProgram(shaderProgram);
 
@@ -301,18 +307,25 @@ void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 
     viewLoc = glGetUniformLocation(shaderProgram, "view");
     projectionLoc =  glGetUniformLocation(shaderProgram, "projection");
     cameraPos = glGetUniformLocation(shaderProgram, "cameraPos");
-
+    textureLoc = glGetUniformLocation(shaderProgram, "modelTexture");
+    
     glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &modelMatrix[0][0]);
     glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);   
     glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
+    
+    glUniform1i(textureLoc, 0);
 
     glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
+    
     for(unsigned int i = 0; i < model->meshCount; i++){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, model->mashes[i].texture);
         glBindVertexArray(model->mashes[i].VAO);
         glDrawElements(GL_TRIANGLES, model->mashes[i].indexCount, GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
+    
 }
 
 void modelDestroy(Model* model){
