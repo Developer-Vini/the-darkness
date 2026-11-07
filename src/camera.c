@@ -189,3 +189,25 @@ Vec3 cameraGetWeaponPosition(Camera *camera, float v1, float v2, float v3){
 
     return armaPosition;
 }
+
+void cameraGetRotationMat(Camera *camera, Mat4 result){
+    result[0][0] = camera->right.x;
+    result[0][1] = camera->up.x;
+    result[0][2] = camera->front.x;
+    result[0][3] = 0.0f;
+
+    result[1][0] = camera->right.y;
+    result[1][1] = camera->up.y;
+    result[1][2] = camera->front.y;
+    result[1][3] = 0.0f;
+
+    result[2][0] = camera->right.z;
+    result[2][1] = camera->up.z;
+    result[2][2] = camera->front.z;
+    result[2][3] = 0.0f;
+
+    result[3][0] = 0.0f;
+    result[3][1] = 0.0f;
+    result[3][2] = 0.0f;
+    result[3][3] = 1.0f;
+}

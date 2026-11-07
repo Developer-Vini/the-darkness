@@ -36,4 +36,5 @@ void mat4Multiply(Mat4 a, Mat4 b, Mat4 result);
 Vec3 vec3Add(Vec3 a, Vec3 b);
 Vec3 cameraGetWeaponPosition(Camera *camera, float v1, float v2, float v3);
 Vec3 vec3Scal(Vec3 v, float scalar);
+void cameraGetRotationMat(Camera *camera, Mat4 result);
 #endif
