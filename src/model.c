@@ -176,7 +176,7 @@ int modelLoad(Model* model, const char* path){
 
 void modelDraw(const Model* model, GLuint shaderProgram, Mat4 modelMatrix, Mat4 view, Mat4 projection, Vec3 cameraPosition ){
     
-        GLint modelLoc;
+    GLint modelLoc;
     GLint viewLoc;
     GLint projectionLoc;
     GLint cameraPos;
@@ -212,4 +212,26 @@ void modelDestroy(Model* model){
 
     model->mashes = NULL;
     model->meshCount = 0;
+}
+
+GLuint loadTexture(const unsigned char* image, int w, int h, int channels){
+    GLuint texture;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
+
+    glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    return texture;
+
 }
