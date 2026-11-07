@@ -136,7 +136,7 @@ int main(){
 
         cameraGetRotationMat(&camera, rotation);
 
-        Vec3 weapon = cameraGetWeaponPosition(&camera, 0.35f, -0.3f, 0.7f);
+        Vec3 weapon = cameraGetWeaponPosition(&camera, 0.30f, -0.3f, 0.7f);
         mat4Translate(wModel, rotation, weapon);
         
         //drawCube(translateModel, view, projection, shaderProgram);
