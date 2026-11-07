@@ -232,3 +232,25 @@ void mat4RotateX(Mat4 result, float angle){
     result[3][2] = 0.0f;
     result[3][3] = 1.0f;
 }
+
+void mat4RotateY(Mat4 result, float angle){
+    result[0][0] = cosf(angle);
+    result[0][1] = 0.0f;
+    result[0][2] = sinf(angle);
+    result[0][3] = 0.0f;
+
+    result[1][0] = 0.0f;
+    result[1][1] = 1.0f;
+    result[1][2] = 0.0f;
+    result[1][3] = 0.0f;
+    
+    result[2][0] = -sinf(angle);
+    result[2][1] = 0.0f;
+    result[2][2] = cosf(angle);
+    result[2][3] = 0.0f;
+
+    result[3][0] = 0.0f;
+    result[3][1] = 0.0f;
+    result[3][2] = 0.0f;
+    result[3][3] = 1.0f;
+}

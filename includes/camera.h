@@ -38,4 +38,5 @@ Vec3 cameraGetWeaponPosition(Camera *camera, float v1, float v2, float v3);
 Vec3 vec3Scal(Vec3 v, float scalar);
 void cameraGetRotationMat(Camera *camera, Mat4 result);
 void mat4RotateX(Mat4 result, float angle);
+void mat4RotateY(Mat4 result, float angle);
 #endif
