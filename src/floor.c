@@ -9,16 +9,17 @@
 #include "../includes/camera.h"
 #include "../includes/object.h"
 
+#include "../libs/include/stb_image.h"
 #include "math.h"
 
 static const float vertices[] = {
-    -16.0f, 0.0f, -16.0f,
-     16.0f, 0.0f, -16.0f,
-     16.0f, 0.0f,  16.0f,
-    -16.0f, 0.0f,  16.0f
+    -16.0f, 0.0f, -16.0f,   0.0f, 0.0f,  
+     16.0f, 0.0f, -16.0f,   1.0f, 0.0f,
+     16.0f, 0.0f,  16.0f,   1.0f, 1.0f,
+    -16.0f, 0.0f,  16.0f,   0.0f, 1.0f
 };
 
-static unsigned int VBO, VAO; unsigned int shaderProgram;
+static unsigned int VBO, VAO; unsigned int shaderProgram, floorTexture;
 static GLint modelLoc;
 static GLint viewLoc;
 static GLint projectionLoc;
@@ -28,16 +29,50 @@ int valueChunckCalcX;
 int valueChunckCalcZ; 
 //static Mat4 matrix;
 
+void loadFloorTexture(void){
+  int w, h, channels;
+
+  //printf("iniciando\n");
+
+  unsigned char *data = stbi_load("assets/floor.png", &w, &h, &channels, 0);
+
+  printf("terminou\n");
+  if(!data){
+    //printf("erro ao carregar! %s\n", stbi_failure_reason());
+    return;
+  }
+
+  //printf("tex carre %dx%d | canais: %d\n", w, h, channels);
+  glGenTextures(1, &floorTexture);
+  glBindTexture(GL_TEXTURE_2D, floorTexture);
+  
+  GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
+
+  glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, data);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glGenerateMipmap(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  stbi_image_free(data);
+
+}
+
 void initFloor(void){
   const char *vertexShaderSource =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos; \n"
+    "layout (location = 1) in vec2 aTexCoord; \n"
+    "out vec2 TexCoord; \n"
     "uniform mat4 model;  \n"
     "uniform mat4 view;  \n"
     "uniform mat4 projection; \n"
     "out vec3 FragPos; \n"
     "void main()\n"
     "{\n"
+    "  TexCoord = aTexCoord; \n"
     "  vec4 worldPosition = model * vec4(aPos, 1.0);\n"
     "  FragPos = worldPosition.xyz;\n"
     "  gl_Position = projection * view * worldPosition;\n"
@@ -50,12 +85,14 @@ void initFloor(void){
     "vec3 fogColor = vec3(0.18, 0.18, 0.2);\n"
     "vec3 floorColor = vec3(0.12, 0.14, 0.17);\n"
     "out vec4 outColor;\n"
+    "in vec2 TexCoord;\n"
+    "uniform sampler2D floorTexture;\n"
     "void main()\n"
     "{\n"
     "  float distancia = distance(FragPos, cameraPos);\n"
     "  float fragFactor = smoothstep(5.0, 20.0, distancia);\n"
     "  vec3 mixColor = mix(floorColor, fogColor, distancia);\n"
-    "  outColor = vec4(mixColor, 1.0);\n"
+    "  outColor = texture(floorTexture, TexCoord);\n"
     "}\0";
 
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -67,6 +104,8 @@ void initFloor(void){
   glCompileShader(vertexShader);
   glCompileShader(fragmentShader);
 
+
+  loadFloorTexture();
   int sucess;
   char infoLog[512];
 
@@ -120,9 +159,12 @@ void initFloor(void){
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
 }
 
 void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
@@ -143,10 +185,17 @@ void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
 
 void drawFloor(Mat4 model, Mat4 view, Mat4 projection, Vec3 cameraPosition){
   glUseProgram(shaderProgram);
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, floorTexture);
+
+
   glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
   glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
+  GLint textureLoc = glGetUniformLocation(shaderProgram, "floorTexture");
   
+  glUniform1i(textureLoc, 0);
   glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
   
   int chunckX;
