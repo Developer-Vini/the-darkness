@@ -8,6 +8,8 @@
 #include "../includes/floor.h"
 #include "../includes/camera.h"
 
+#include "math.h"
+
 static const float vertices[] = {
     -16.0f, 0.0f, -16.0f,
      16.0f, 0.0f, -16.0f,
@@ -20,6 +22,9 @@ static GLint modelLoc;
 static GLint viewLoc;
 static GLint projectionLoc;
 static GLint cameraPos;
+
+int valueChunckCalcX;
+int valueChunckCalcZ; 
 //static Mat4 matrix;
 
 void initFloor(void){
@@ -136,4 +141,20 @@ void destroyFloor(void){
   glDeleteBuffers(1, &VBO);
   glDeleteVertexArrays(1, &VAO);
   glDeleteProgram(shaderProgram);
+}
+
+void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
+  *chunkX = floor((cameraPosition->position.x + 16.0f) / 32);
+  *chunkZ = floor((cameraPosition->position.z + 16.0f) / 32);
+
+  for(int i = 0; i < 5; i++){
+    int x = i;
+    x = x - 2;
+    valueChunckCalcX = (*chunkX + x) * 32.0f;
+    for(int j = 0; j < 5; j++){
+      int z = j;
+      z = z - 2;
+      valueChunckCalcZ = (*chunkZ + z) * 32.0f;
+    }
+  }
 }
