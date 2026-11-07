@@ -29,6 +29,16 @@ GLuint initModelShader(void){
     "  TexCoord = aTexCoord;\n"    
     "  gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
     "}\0";
+ const char *fragmentShaderSource =
+    "#version 330 core\n"
+    "in vec2 TexCoord;\n"
+    "uniform sampler2D modelTexture;\n"
+    "out vec4 outColor;\n"
+    "void main()\n"
+    "{\n"
+    "  outColor = texture(modelTexture, texCoord);\n"
+    "}\0";
+
 }
 
 
