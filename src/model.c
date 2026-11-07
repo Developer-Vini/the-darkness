@@ -14,6 +14,28 @@
 //I wrote this code along with a tutorial (it was written in C++, and I had to translate it in my own way). I wrote in English because it's important and I need you all to know, haha.
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
 
+GLuint loadTexture(const unsigned char* image, int w, int h, int channels){
+    GLuint texture;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
+
+    glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    return texture;
+
+}
+
 static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct aiScene* scene, unsigned int materialIndex){
     const struct aiMaterial* material = scene->mMaterials[materialIndex];
     struct aiString texturePath;
@@ -22,13 +44,12 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
 
     aiGetMaterialTexture(material, aiTextureType_DIFFUSE, 0, &texturePath, NULL,  NULL,  NULL,  NULL,  NULL,  NULL);    
     
-
     if(sscanf(texturePath.data, "*%u", texturePath) == 1){
-        const aiTexture* texture = scene->mTexture[textureIndex];
+        const struct aiTexture* texture = scene->mTextures[textureIndex];
 
         int w, h, channels;
 
-        unsigned char* image = stbi_load_from_memory((const unsigned char*)texture->pcData, texture->width, &w, &h, &channels, 0);
+        unsigned char* image = stbi_load_from_memory((const unsigned char*)texture->pcData, texture->mWidth, &w, &h, &channels, 0);
     
         if(image){
             mesh->texture = loadTexture(image, w, h, channels);
@@ -150,7 +171,7 @@ int modelLoad(Model* model, const char* path){
     }
 
     for(unsigned int i = 0; i < model->meshCount; i++){
-        if(!processMesh(&model->mashes[i],  scene->mMeshes[i])){
+        if(!processMesh(&model->mashes[i],  scene->mMeshes[i], scene, scene->mMeshes[i]->mMaterialIndex)){
             printf("erro ao carregar mesh %u\n", i);
             aiReleaseImport(scene);
             modelDestroy(model);
@@ -235,26 +256,4 @@ void modelDestroy(Model* model){
 
     model->mashes = NULL;
     model->meshCount = 0;
-}
-
-GLuint loadTexture(const unsigned char* image, int w, int h, int channels){
-    GLuint texture;
-
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D,texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-    GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
-
-    glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    return texture;
-
 }
