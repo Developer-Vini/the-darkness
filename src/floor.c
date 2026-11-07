@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 #include "../includes/floor.h"
 #include "../includes/camera.h"
+#include "../includes/object.h"
 
 #include "math.h"
 
@@ -124,25 +125,6 @@ void initFloor(void){
   glEnableVertexAttribArray(0);
 }
 
-void drawFloor(Mat4 model, Mat4 view, Mat4 projection, Vec3 cameraPosition){
-  glUseProgram(shaderProgram);
-  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
-  glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
-  glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
-  glBindVertexArray(VAO);
-
-  glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-  glBindVertexArray(0);
-}
-
-
-void destroyFloor(void){
-  glDeleteBuffers(1, &VBO);
-  glDeleteVertexArrays(1, &VAO);
-  glDeleteProgram(shaderProgram);
-}
-
 void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
   *chunkX = (int)floor((cameraPosition->position.x + 16.0f) / 32);
   *chunkZ = (int)floor((cameraPosition->position.z + 16.0f) / 32);
@@ -157,4 +139,52 @@ void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
       valueChunckCalcZ = (*chunkZ + z) * 32.0f;
     }
   }
+}
+
+void drawFloor(Mat4 model, Mat4 view, Mat4 projection, Vec3 cameraPosition){
+  glUseProgram(shaderProgram);
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &model[0][0]);
+  glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
+  glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection[0][0]);
+  
+  glUniform3f(cameraPos, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+  
+  int chunckX;
+  int chunckZ;
+  
+  Camera camera;
+  camera.position = cameraPosition;
+  
+  getChunckPoistion(&camera, &chunckX, &chunckZ);
+  
+  glBindVertexArray(VAO);
+
+  for(int i = 0;  i < 5; i++){
+    int x = i - 2;
+
+    float WorX = (chunckX + x) * 32.0f;
+    for (int j = 0; j < 5; j++){
+      int z = j - 2;
+      float WorZ = (chunckZ + z) * 32.0f;
+
+      Vec3 chunkPosition = {
+        WorX, 0.0f, WorZ
+      };
+
+      Mat4 chunkModel;
+      mat4Translate(chunkModel, model, chunkPosition);
+
+      glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &chunkModel[0][0]);
+
+      glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+  }
+  glBindVertexArray(0);
+}
+
+
+void destroyFloor(void){
+  glDeleteBuffers(1, &VBO);
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteProgram(shaderProgram);
 }
