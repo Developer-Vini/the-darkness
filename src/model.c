@@ -114,7 +114,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
 
     aiGetMaterialTexture(material, aiTextureType_DIFFUSE, 0, &texturePath, NULL,  NULL,  NULL,  NULL,  NULL,  NULL);    
     
-    if(sscanf(texturePath.data, "*%u", texturePath) == 1){
+    if(sscanf(texturePath.data, "*%u", textureIndex) == 1){
         const struct aiTexture* texture = scene->mTextures[textureIndex];
 
         int w, h, channels;
@@ -131,7 +131,6 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
     unsigned int indexCount = 0;
-
 
     for(unsigned int i = 0; i < aiMeshData->mNumFaces; i++){
         indexCount = indexCount + aiMeshData->mFaces[i].mNumIndices;
