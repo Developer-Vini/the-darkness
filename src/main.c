@@ -106,6 +106,9 @@ int main(){
         Vec3 RightStep = { camera.right.x, 0.0f, camera.right.z};
         Vec3 normalizedRight = vec3nNormal(RightStep);
 
+        Mat4 rotation;
+        Mat4 translation;
+
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
             
@@ -131,8 +134,10 @@ int main(){
         cameraGetViewMat(&camera, view);
         drawFloor(model, view, projection, camera.position);
 
+        cameraGetRotationMat(&camera, rotation);
+
         Vec3 weapon = cameraGetWeaponPosition(&camera, 0.35f, -0.3f, 0.7f);
-        mat4Translate(wModel, model, weapon);
+        mat4Translate(wModel, rotation, weapon);
         
         //drawCube(translateModel, view, projection, shaderProgram);
         modelDraw(&caixa, shaderProgram, wModel, view, projection, camera.position);
