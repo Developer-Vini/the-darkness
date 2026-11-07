@@ -10,6 +10,7 @@ typedef struct{
     GLuint VAO;
     GLuint VBO;
     GLuint EBO;
+    GLint texture;
     unsigned int indexCount;
 } Mesh;
 

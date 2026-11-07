@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 //I wrote this code along with a tutorial (it was written in C++, and I had to translate it in my own way). I wrote in English because it's important and I need you all to know, haha.
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
 
@@ -104,7 +107,11 @@ int modelLoad(Model* model, const char* path){
         printf("erro ao importar: %s\n", aiGetErrorString());
         return 0;
     }
-    
+
+    //printf("Meshes: %u\n", scene->mNumMeshes);    
+    //printf("Material: %u\n", scene->mNumMaterials);
+    //printf("Textures: %u\n", scene->mNumTextures);
+
     model->meshCount = scene->mNumMeshes;
     model->mashes = calloc(model->meshCount, sizeof(Mesh));
     
@@ -127,8 +134,40 @@ int modelLoad(Model* model, const char* path){
             modelDestroy(model);
             return 0;
         }
+       //printf("Mesg %u usa material%u\n", i,  (unsigned int)scene->mMeshes[i]->mMaterialIndex);
+    }
+    
+    for(unsigned int i = 0; i < scene->mNumMaterials; i++){
+        struct aiMaterial* material = scene->mMaterials[i];
+        struct aiString texturePath;
+        enum aiReturn result = aiGetMaterialTexture(material, aiTextureType_DIFFUSE, 0, &texturePath, NULL,  NULL,  NULL,  NULL,  NULL,  NULL);    
+    
+        if(result == aiReturn_SUCCESS){
+            printf("material %u: %s\n", i, texturePath.data);
+        }
+    }
+    
+
+    const struct aiTexture* texture = scene->mTextures[0];
+
+    int w, h, channels;
+
+    unsigned char* image = stbi_load_from_memory(
+        (const unsigned char*)texture->pcData, texture->mWidth, &w, &h, &channels, 0
+    );
+
+    if(image){
+        printf("img crrgd: %d x %d\n", w, h); 
+        printf("chnls: %d\n", channels); 
+        stbi_image_free(image);
+    }else{
+        printf("err: %s\n", stbi_failure_reason());
     }
 
+
+    //printf("larg: %u\n", texture->mWidth);
+    //printf("alt: %u\n", texture->mHeight);
+    //printf("form: %u\n", texture->achFormatHint);
     aiReleaseImport(scene);
     printf("modelo carregado!");
     return 1;
