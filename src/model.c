@@ -75,7 +75,12 @@ GLuint initModelShader(void){
       printf("shader program error:\n%s\n", infoLog);
     }
 
-    glDeleteShader(modelShaderProgram);
+    //glDeleteShader(modelShaderProgram);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return modelShaderProgram;
 }
 
 
