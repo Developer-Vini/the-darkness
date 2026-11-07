@@ -9,10 +9,10 @@
 #include "../includes/camera.h"
 
 static const float vertices[] = {
-    -10.0f, 0.0f, -10.0f,
-     10.0f, 0.0f, -10.0f,
-     10.0f, 0.0f,  10.0f,
-    -10.0f, 0.0f,  10.0f
+    -16.0f, 0.0f, -16.0f,
+     16.0f, 0.0f, -16.0f,
+     16.0f, 0.0f,  16.0f,
+    -16.0f, 0.0f,  16.0f
 };
 
 static unsigned int VBO, VAO; unsigned int shaderProgram;
