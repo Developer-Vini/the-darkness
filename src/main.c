@@ -46,6 +46,7 @@ int main(){
 
     initFloor(); 
     initCube(shaderProgram);
+    GLuint modelShaderProgram = initModelShader();
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
@@ -144,7 +145,7 @@ int main(){
         mat4Translate(wModel, finalR, weapon);
         
         //drawCube(translateModel, view, projection, shaderProgram);
-        modelDraw(&caixa, shaderProgram, wModel, view, projection, camera.position);
+        modelDraw(&caixa, modelShaderProgram, wModel, view, projection, camera.position);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
