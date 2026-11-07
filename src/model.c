@@ -37,7 +37,7 @@ GLuint initModelShader(void){
     "out vec4 outColor;\n"
     "void main()\n"
     "{\n"
-    "  outColor = texture(modelTexture, texCoord);\n"
+    "  outColor = texture(modelTexture, TexCoord);\n"
     "}\0";
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
