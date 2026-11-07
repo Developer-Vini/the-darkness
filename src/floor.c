@@ -144,8 +144,8 @@ void destroyFloor(void){
 }
 
 void getChunckPoistion(Camera *cameraPosition, int*chunkX, int *chunkZ){
-  *chunkX = floor((cameraPosition->position.x + 16.0f) / 32);
-  *chunkZ = floor((cameraPosition->position.z + 16.0f) / 32);
+  *chunkX = (int)floor((cameraPosition->position.x + 16.0f) / 32);
+  *chunkZ = (int)floor((cameraPosition->position.z + 16.0f) / 32);
 
   for(int i = 0; i < 5; i++){
     int x = i;
