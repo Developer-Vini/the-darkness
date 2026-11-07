@@ -14,7 +14,7 @@
 //I wrote this code along with a tutorial (it was written in C++, and I had to translate it in my own way). I wrote in English because it's important and I need you all to know, haha.
 //It wasn't everything, just that function, but I managed to understand the logic behind it.
 
-static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData){
+static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct aiScene* scene, unsigned int materialIndex){
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
     unsigned int indexCount = 0;
