@@ -137,7 +137,7 @@ int main(){
         drawFloor(model, view, projection, camera.position);
 
         cameraGetRotationMat(&camera, rotation);
-        mat4RotateX(weaponR, 20.0f * M_PI / 180.0f);
+        mat4RotateY(weaponR, -90.0f * M_PI / 180.0f);
 
         mat4Multiply(rotation, weaponR, finalR);
         Vec3 weapon = cameraGetWeaponPosition(&camera, 0.30f, -0.3f, 0.7f);
