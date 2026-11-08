@@ -149,7 +149,7 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
         mesh->boneIDs = NULL;
         mesh->weights = NULL;
 
-        return 0 
+        return 0;
     }
 
     for(unsigned int i = 0; i < aiMeshData->mNumBones; i++){
@@ -162,12 +162,12 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
                 continue;
             }
 
-            for(int k = 0; k < MAX_BONE; i++){
+            for(int k = 0; k < MAX_BONE; k++){
                 unsigned int index = vertexID * MAX_BONE + k;
 
                 if(mesh->weights[index] == 0.0f){
                     mesh->boneIDs[index] = i;
-                    mesh->weights[index] = weight.mWeights;
+                    mesh->weights[index] = weight.mWeight;
                     break;
                 }
             }
