@@ -97,6 +97,11 @@ int main(){
     if(!modelLoad(&caixa, "assets/models/weapon/cod_arma.glb")){
         printf("falha oa carregar");
     }
+
+    Model zumbi;
+    if(!modelLoad(&zumbi, "assets/models/zombie/zombie_crawling.glb")){
+        printf("falhou");
+    }
     
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
@@ -146,6 +151,7 @@ int main(){
         
         //drawCube(translateModel, view, projection, shaderProgram);
         modelDraw(&caixa, modelShaderProgram, wModel, view, projection, camera.position);
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

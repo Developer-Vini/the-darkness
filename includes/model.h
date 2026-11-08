@@ -6,11 +6,16 @@
 
 //preciso do vao pra guardar info, ebo guarda as vertices e vbo guardar os indice.
 //isso aqui eu to fazendo de um tutorial, nao me lembrava mais disso hkakak
+
+#define MAX_BONE 4
 typedef struct{
     GLuint VAO;
     GLuint VBO;
     GLuint EBO;
     GLint texture;
+
+    int* boneIDs;
+    float* weights;
     unsigned int indexCount;
 } Mesh;
 

@@ -136,6 +136,44 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
     
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
+
+    //printf("osso: %u\n", aiMeshData->mNumBones);
+
+    mesh->boneIDs = calloc(vertexCount * MAX_BONE, sizeof(int));
+    mesh->weights = calloc(vertexCount * MAX_BONE, sizeof(float));
+    
+    if(!mesh->boneIDs || !mesh->weights){
+        free(mesh->boneIDs);
+        free(mesh->weights);
+
+        mesh->boneIDs = NULL;
+        mesh->weights = NULL;
+
+        return 0 
+    }
+
+    for(unsigned int i = 0; i < aiMeshData->mNumBones; i++){
+        const struct aiBone* bone = aiMeshData->mBones[i];
+        for(unsigned int j = 0; j<bone->mNumWeights; j++){
+            struct aiVertexWeight weight = bone->mWeights[j];
+            unsigned int vertexID = weight.mVertexId;
+            
+            if(vertexID >= vertexCount){
+                continue;
+            }
+
+            for(int k = 0; k < MAX_BONE; i++){
+                unsigned int index = vertexID * MAX_BONE + k;
+
+                if(mesh->weights[index] == 0.0f){
+                    mesh->boneIDs[index] = i;
+                    mesh->weights[index] = weight.mWeights;
+                    break;
+                }
+            }
+        }
+    }
+
     unsigned int indexCount = 0;
 
     for(unsigned int i = 0; i < aiMeshData->mNumFaces; i++){
@@ -219,12 +257,26 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
 int modelLoad(Model* model, const char* path){
     memset(model, 0, sizeof(Model));
     
+    //printf("carregando: %s\n", path);
+
     const struct aiScene* scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs);
     
     if(!scene || !scene->mRootNode){
         printf("erro ao importar: %s\n", aiGetErrorString());
         return 0;
     }
+
+
+    //printf("anim: %u\n", scene->mNumAnimations);
+
+    //for(unsigned int i = 0; i< scene->mNumAnimations; i++){
+    //    const struct aiAnimation* animation = scene->mAnimations[i];
+    //    printf("anim %u\n", i);
+    //    printf("name %s\n", animation->mName.data);
+    //    printf("dura %f\n", animation->mDuration);
+    //    printf("tick p segun %f\n", animation->mTicksPerSecond);
+    //    printf("chann %u\n", animation->mNumChannels);
+    //}
 
     //printf("Meshes: %u\n", scene->mNumMeshes);    
     //printf("Material: %u\n", scene->mNumMaterials);
@@ -332,6 +384,8 @@ void modelDestroy(Model* model){
     for(unsigned int i = 0; i < model->meshCount; i++){
         glDeleteVertexArrays(1, &model->mashes[i].VAO);
         glDeleteBuffers(1, &model->mashes[i].VBO);
+        free(model->mashes[i].boneIDs);
+        free(model->mashes[i].weights);
         glDeleteBuffers(1, &model->mashes[i].EBO);
     }
     free(model->mashes);
