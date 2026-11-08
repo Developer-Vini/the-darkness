@@ -7,7 +7,6 @@
 #include "../includes/floor.h"
 #include "../includes/object.h"
 #include "../includes/model.h"
-
 //configs
 #define CAMERA_FOV 45.0f
 #define CAMERA_ASPECT 800.0f / 600.0f
@@ -19,7 +18,6 @@ void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera)
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 
 int main(){
-    
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
         return 1;
@@ -99,6 +97,8 @@ int main(){
     }
 
     Model zumbi;
+    Vec3 zumbiPosition = {0.0f, 0.0f, -8.0f};
+    float zumbiSpeed = 1.0f;
     if(!modelLoad(&zumbi, "assets/models/zombie/zombie_crawling.glb")){
         printf("falhou");
     }
@@ -149,9 +149,26 @@ int main(){
         Vec3 weapon = cameraGetWeaponPosition(&camera, 0.30f, -0.3f, 0.7f);
         mat4Translate(wModel, finalR, weapon);
         
+        Vec3 direction = vec3Sub(camera.position, zumbiPosition);
+        direction.y = 0.0f;
+
+        float distance = vec3Length(direction);
+        if(distance > 1.5f){
+            direction = vec3nNormal(direction);
+            Vec3 movement = vec3Scal(direction, zumbiSpeed * delta);
+            zumbiPosition = vec3Add(zumbiPosition, movement);
+        }
+
+        Mat4 zumbiModel ={
+            {0.1f, 0, 0, zumbiPosition.x},
+            {0, 0.01f, 0, zumbiPosition.y},
+            {0, 0, 0.01f, zumbiPosition.z},
+            {0, 0, 0, 1}
+        };
+
         //drawCube(translateModel, view, projection, shaderProgram);
         modelDraw(&caixa, modelShaderProgram, wModel, view, projection, camera.position);
-        
+        modelDraw(&zumbi, modelShaderProgram, zumbiModel, view, projection, camera.position);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

@@ -136,7 +136,25 @@ static int processMesh(Mesh* mesh, const struct aiMesh* aiMeshData, const struct
     
     unsigned int vertexCount = aiMeshData->mNumVertices;
 
-
+    //float minX = 99999999.0f, minY = 99999999.0f, minZ = 99999999.0f; 
+    //float maxX = 99999999.0f, maxY = 99999999.0f, maxZ = 99999999.0f;
+    //
+    //for(unsigned int i = 0; i < vertexCount; i++){
+    //    struct aiVector3D p = aiMeshData->mVertices[i];
+    //
+    //    if(p.x < minX) minX = p.x;
+    //    if(p.y < minY) minY = p.y;
+    //    if(p.z < minZ) minZ = p.z;
+    //    
+    //    if(p.x < maxX) maxX = p.x;
+    //    if(p.y < maxY) maxY = p.y;
+    //    if(p.z < maxZ) maxZ = p.z;
+    //    
+    //}
+    //
+    //printf("zumbi x: %f a %f\n", minX, maxX);
+    //printf("zumbi y: %f a %f\n", minY, maxY);
+    //printf("zumbi z: %f a %f\n", minZ, maxZ);
     //printf("osso: %u\n", aiMeshData->mNumBones);
 
     mesh->boneIDs = calloc(vertexCount * MAX_BONE, sizeof(int));
