@@ -127,6 +127,8 @@ int main(){
     int morreu = 0;
     int state = 0;
 
+    float reco = 0.0f;
+
     float titleTimer = 0.0f;
 
     printf("nivel 1 %d zumbis\n", total);
@@ -195,6 +197,7 @@ int main(){
 
             if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && shootTime <= 0){
                 shootTime = 0.25f;
+                reco = 1.0f;
             
                 int i;
                 for(i = 0; i < MAX_ZOM; i++){
@@ -251,7 +254,11 @@ int main(){
         mat4RotateY(weaponR, -90.0f * M_PI / 180.0f);
 
         mat4Multiply(rotation, weaponR, finalR);
-        Vec3 weapon = cameraGetWeaponPosition(&camera, 0.30f, -0.3f, 0.7f);
+        reco -= delta * 8.0f;
+        if(reco < 0.0f){
+            reco = 0.0f;
+        }
+        Vec3 weapon = cameraGetWeaponPosition(&camera, 0.30f, -0.3f + 0.06f * reco, 0.7f -0.05f * reco);;
         mat4Translate(wModel, finalR, weapon);
         
        
