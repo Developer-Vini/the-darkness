@@ -122,6 +122,9 @@ int main(){
         printf("falhou");
     }
     
+    float shootTime = 0.0f;
+    int score = 0;
+
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
         float delta = deltaTime - lastFrame;
@@ -153,6 +156,19 @@ int main(){
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
             moveCharacter(3.0f, delta, normalizedRight, &camera);
         }
+
+        shootTime -= delta;
+
+        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && shootTime <= 0){
+            shootTime = 0.25f;
+
+            if(hitZombie(camera.position, camera.front, zumbiPosition) >= 0.0f){
+                score += 1;
+                printf("acertou o zumbi hehee %d\n", score);
+                zumbiPosition = (Vec3){0.0f, 0.0f, -15.f};
+            }
+        }
+
 
         glClearColor(0.03f, 0.035f, 0.04f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
