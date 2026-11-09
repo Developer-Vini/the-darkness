@@ -15,7 +15,7 @@
 #define CAMERA_ASPECT 800.0f / 600.0f
 #define CAMERA_NEAR 0.1f
 #define CAMERA_FAR 100.0f
-#define MAX_ZOM 20
+#define MAX_ZOM 50
 
 
 typedef struct {
@@ -172,7 +172,7 @@ int main(){
             if(spawTimer <= 0.0f && apareceu < total){
                 spawnZomb(zombies, camera.position);
                 apareceu++;
-                spawTimer = 2.0f;
+                spawTimer = 2.0f - level * 0.3f;
             }
 
             for(int i = 0; i < MAX_ZOM; i++){
@@ -204,7 +204,7 @@ int main(){
                     if(hitZombie(camera.position, camera.front, zombies[i].position) >= 0.0f){
                         zombies[i].alive = 0;
                         morreu++;
-                        printf("zumbis mortos: %d/%d\n", morreu, total);
+                        //printf("zumbis mortos: %d/%d\n", morreu, total);
                         break;
                     }
                 }
@@ -214,13 +214,14 @@ int main(){
                 level++;
                 if(level > 5){
                     state = 2;
-                    printf("u win!!");
+                    //printf("u win!!");
                 }else{
                     total = 3 + level * 2;
+                    zumbiSpeed += 0.5f;
                     apareceu = 0;
                     morreu = 0;
                     spawTimer = 3.0f;
-                    printf("nivel %d p %d zumbi\n", level, total);
+                    //printf("nivel %d p %d zumbi\n", level, total);
                 }
             }
         }
