@@ -165,47 +165,63 @@ int main(){
             moveCharacter(3.0f, delta, normalizedRight, &camera);
         }
 
-        spawTimer -= delta;
-
-        if(spawTimer <= 0.0f){
-            spawnZomb(zombies, camera.position);
-            spawTimer = 2.0f;
-        }
-        for(int i = 0; i < MAX_ZOM; i++){
-            if(!zombies[i].alive){
-                continue;
+        if(state == 0){
+            spawTimer -= delta;
+            if(spawTimer <= 0.0f && apareceu < total){
+                spawnZomb(zombies, camera.position);
+                apareceu++;
+                spawTimer = 2.0f;
             }
 
-            Vec3 direction = vec3Sub(camera.position, zombies[i].position);
-            direction.y = 0.0f;
-
-            if(vec3Length(direction) > 1.5f){
-                direction = vec3nNormal(direction);
-                zombies[i].position = vec3Add(zombies[i].position, vec3Scal(direction, zumbiSpeed * delta));
-            }
-        }
-
-
-        shootTime -= delta;
-
-        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && shootTime <= 0){
-            shootTime = 0.25f;
-
-            int i;
-            for(i = 0; i < MAX_ZOM; i++){
+            for(int i = 0; i < MAX_ZOM; i++){
                 if(!zombies[i].alive){
                     continue;
                 }
-                if(hitZombie(camera.position, camera.front, zombies[i].position) >= 0.0f){
-                    zombies[i].alive = 0;
-                    score+=1;
-                    printf("acertou pontos: %d\n", score);
+
+                Vec3 direction = vec3Sub(camera.position, zombies[i].position);
+                direction.y = 0.0f;
+
+                if(vec3Length(direction) < 2.0f){
+                    state = 1;
+                    printf("u dead, man! %d\n", level);
                     break;
+                }
+                direction = vec3nNormal(direction);
+                zombies[i].position = vec3Add(zombies[i].position, vec3Scal(direction, zumbiSpeed * delta));
+            }
+                    shootTime -= delta;
+
+            if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && shootTime <= 0){
+                shootTime = 0.25f;
+            
+                int i;
+                for(i = 0; i < MAX_ZOM; i++){
+                    if(!zombies[i].alive){
+                        continue;
+                    }
+                    if(hitZombie(camera.position, camera.front, zombies[i].position) >= 0.0f){
+                        zombies[i].alive = 0;
+                        morreu++;
+                        printf("zumbis mortos: %d/%d\n", morreu, total);
+                        break;
+                    }
+                }
+            }
+
+            if(morreu >= total){
+                level++;
+                if(level > 5){
+                    state = 2;
+                    printf("u win!!");
+                }else{
+                    total = 3 + level * 2;
+                    apareceu = 0;
+                    morreu = 0;
+                    spawTimer = 3.0f;
+                    printf("nivel %d p %d zumbi\n", level, total);
                 }
             }
         }
-
-
 
         glClearColor(0.03f, 0.035f, 0.04f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
