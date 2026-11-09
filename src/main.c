@@ -120,9 +120,18 @@ int main(){
     }
     
     float shootTime = 0.0f;
-    int score = 0;
+    
+    int level = 1;
+    int total = 3 + level * 2;
+    int apareceu = 0;
+    int morreu = 0;
+    int state = 0;
 
-    for(int i = 0; i < 3; i++) spawnZomb(zombies, camera.position);
+    printf("nivel 1 %d zumbis\n", total);
+    
+    //int score = 0;
+
+    //for(int i = 0; i < 3; i++) spawnZomb(zombies, camera.position);
 
     while (!glfwWindowShouldClose(window)){
         float deltaTime = glfwGetTime();
