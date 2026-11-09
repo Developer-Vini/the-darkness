@@ -1,18 +1,25 @@
 #include <stdio.h>
+#include <time.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "math.h"
 
+#include "math.h"
 #include "../includes/camera.h"
 #include "../includes/floor.h"
 #include "../includes/object.h"
 #include "../includes/model.h"
+
 //configs
 #define CAMERA_FOV 45.0f
 #define CAMERA_ASPECT 800.0f / 600.0f
 #define CAMERA_NEAR 0.1f
 #define CAMERA_FAR 100.0f
+#define MAX_ZOM 20
 
+typedef struct {
+    Vec3 position;
+    int alive;
+} Zombie;
 
 void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera);
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
