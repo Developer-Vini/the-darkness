@@ -127,6 +127,8 @@ int main(){
     int morreu = 0;
     int state = 0;
 
+    float titleTimer = 0.0f;
+
     printf("nivel 1 %d zumbis\n", total);
     
     //int score = 0;
@@ -221,6 +223,20 @@ int main(){
                     printf("nivel %d p %d zumbi\n", level, total);
                 }
             }
+        }
+
+        titleTimer -= delta;
+        if(titleTimer  <= 0.0f){
+            titleTimer = 0.1f;
+            char title[100];
+            if(state == 0){
+                snprintf(title, sizeof(title), "nivel %d/5 zumbis: %d/%d", level, morreu, total);
+            }else if(state == 1){
+                snprintf(title, sizeof(title), "You dead, bro. reached the level %d", level);
+            }else{
+                snprintf(title, sizeof(title), "YOU WIN!!!");
+            }
+            glfwSetWindowTitle(window, title);
         }
 
         glClearColor(0.03f, 0.035f, 0.04f, 1.0f);
