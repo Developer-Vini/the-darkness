@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -15,7 +16,7 @@
 #define CAMERA_NEAR 0.1f
 #define CAMERA_FAR 100.0f
 #define MAX_ZOM 20
-#define RAND_MAX 10
+
 
 typedef struct {
     Vec3 position;
@@ -111,7 +112,7 @@ int main(){
 
     Zombie zombies[MAX_ZOM] = {0};
 
-    float zumbiSpeed = 1.0f;
+    float zumbiSpeed = 3.0f;
     float spawTimer = 0.0f;
 
     if(!modelLoad(&zumbi, "assets/models/zombie/zombie_crawling.glb")){
@@ -155,17 +156,46 @@ int main(){
             moveCharacter(3.0f, delta, normalizedRight, &camera);
         }
 
+        spawTimer -= delta;
+
+        if(spawTimer <= 0.0f){
+            spawnZomb(zombies, camera.position);
+            spawTimer = 2.0f;
+        }
+        for(int i = 0; i < MAX_ZOM; i++){
+            if(!zombies[i].alive){
+                continue;
+            }
+
+            Vec3 direction = vec3Sub(camera.position, zombies[i].position);
+            direction.y = 0.0f;
+
+            if(vec3Length(direction) > 1.5f){
+                direction = vec3nNormal(direction);
+                zombies[i].position = vec3Add(zombies[i].position, vec3Scal(direction, zumbiSpeed * delta));
+            }
+        }
+
+
         shootTime -= delta;
 
         if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && shootTime <= 0){
             shootTime = 0.25f;
 
-            if(hitZombie(camera.position, camera.front, zumbiPosition) >= 0.0f){
-                score += 1;
-                printf("acertou o zumbi hehee %d\n", score);
-                zumbiPosition = (Vec3){0.0f, 0.0f, -15.f};
+            int i;
+            for(i = 0; i < MAX_ZOM; i++){
+                if(!zombies[i].alive){
+                    continue;
+                }
+                if(hitZombie(camera.position, camera.front, zombies[i].position) >= 0.0f){
+                    zombies[i].alive = 0;
+                    score+=1;
+                    printf("acertou pontos: %d\n", score);
+                    break;
+                }
             }
         }
+
 
 
         glClearColor(0.03f, 0.035f, 0.04f, 1.0f);
@@ -183,16 +213,30 @@ int main(){
         mat4Translate(wModel, finalR, weapon);
         
        
-        Mat4 zumbiModel ={
-            {0.1f, 0, 0, zumbiPosition.x},
-            {0, 0.01f, 0, zumbiPosition.y},
-            {0, 0, 0.01f, zumbiPosition.z},
-            {0, 0, 0, 1}
-        };
+        for(int i = 0; i < MAX_ZOM; i++){
+            if(!zombies[i].alive){
+                continue;
+            }
+
+            Vec3 tPlayer = vec3Sub(camera.position, zombies[i].position);
+
+            float yaw = atan2f(tPlayer.x, tPlayer.z);
+            float cosseno = cosf(yaw) * 0.01f;
+            float seno = sinf(yaw) * 0.01f;
+
+            Mat4 zombiModel = {
+                {cosseno, 0, seno, zombies[i].position.x},
+                {0,       0.01f, 0, zombies[i].position.y},
+                {-seno,   0, cosseno, zombies[i].position.z},
+                {0,       0,  0,    1},
+            };
+            modelDraw(&zumbi, modelShaderProgram, zombiModel, view, projection, camera.position);
+        }
+
 
         //drawCube(translateModel, view, projection, shaderProgram);
         modelDraw(&caixa, modelShaderProgram, wModel, view, projection, camera.position);
-        modelDraw(&zumbi, modelShaderProgram, zumbiModel, view, projection, camera.position);
+       
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -261,7 +305,7 @@ float hitZombie(Vec3 origin, Vec3 dir, Vec3 zombiePos){
     Vec3 center = {zombiePos.x, zombiePos.y + 1.0f, zombiePos.z};
     Vec3 vectorDistanceCameraZombie = vec3Sub(center, origin);
     
-    float vectorDirection = vec3Dot(center, origin);
+    float vectorDirection = vec3Dot(vectorDistanceCameraZombie, dir);
     
     if(vectorDirection < 0.0f){
         return -1.0f;
