@@ -82,17 +82,18 @@ void initFloor(void){
     "#version 330 core\n"
     "in vec3 FragPos;\n"
     "uniform vec3 cameraPos;\n"
-    "vec3 fogColor = vec3(0.18, 0.18, 0.2);\n"
-    "vec3 floorColor = vec3(0.12, 0.14, 0.17);\n"
+    "vec3 fogColor = vec3(0.16, 0.18, 0.20);\n"
+    "vec3 floorColor = vec3(1.0, 1.0, 1.0);\n"
     "out vec4 outColor;\n"
     "in vec2 TexCoord;\n"
+    "float density = 0.12;\n"
     "uniform sampler2D floorTexture;\n"
     "void main()\n"
     "{\n"
     "  float distancia = distance(FragPos, cameraPos);\n"
-    "  float fragFactor = smoothstep(5.0, 20.0, distancia);\n"
-    "  vec3 mixColor = mix(floorColor, fogColor, distancia);\n"
-    "  outColor = texture(floorTexture, TexCoord);\n"
+    "  float fogFactor = 1.0 - exp(-pow(distancia * density, 2.0));"
+    "  vec3 mixColor = texture(floorTexture, TexCoord).rgb * 0.45;\n"
+    "  outColor = vec4(mix(mixColor, fogColor, fogFactor), 1.0);\n"
     "}\0";
 
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);

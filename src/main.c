@@ -135,7 +135,7 @@ int main(){
             moveCharacter(3.0f, delta, normalizedRight, &camera);
         }
 
-        glClearColor(0.02f, 0.02f, 0.025f, 1.0f);
+        glClearColor(0.03f, 0.035f, 0.04f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         

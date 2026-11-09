@@ -22,22 +22,34 @@ GLuint initModelShader(void){
     //"layout (location = 1) in vec3 aNormal; \n"
     "layout (location = 2) in vec2 aTexCoord; \n"
     "uniform mat4 model;  \n"
+    "out vec3 FragPos; \n"
     "uniform mat4 view;  \n"
     "uniform mat4 projection; \n"
     "out vec2 TexCoord; \n"
     "void main()\n"
     "{\n"
     "  TexCoord = aTexCoord;\n"    
-    "  gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
+    "  vec4 worldPos = model * vec4(aPos, 1.0);\n"
+    "  FragPos = worldPos.xyz;"
+    "  gl_Position = projection * view  * worldPos;\n"
     "}\0";
+
  const char *fragmentShaderSource =
     "#version 330 core\n"
     "in vec2 TexCoord;\n"
+    "in vec3 FragPos;\n"
     "uniform sampler2D modelTexture;\n"
+    "uniform vec3 cameraPos;\n"
     "out vec4 outColor;\n"
+    "float density = 0.12;\n"
     "void main()\n"
     "{\n"
-    "  outColor = texture(modelTexture, TexCoord);\n"
+    "  float distancia = distance(FragPos, cameraPos);\n"
+    "  float fogFactor = 1.0 - exp(-pow(distancia * density, 2.0));\n"
+    "  vec3 fogColor = vec3(0.16, 0.18, 0.20);\n"
+    "  vec3 objectColor = texture(modelTexture, TexCoord).rgb * 0.6;\n"
+    "  vec3 finalColor = mix(objectColor, fogColor, fogFactor);"
+    "  outColor = vec4(finalColor, 1.0);\n"
     "}\0";
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
