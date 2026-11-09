@@ -17,6 +17,25 @@
 void moveCharacter(float speed, float deltaTime, Vec3 direction, Camera *camera);
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 
+float hitZombie(Vec3 origin, Vec3 dir, Vec3 zombiePos){
+    Vec3 center = {zombiePos.x, zombiePos.y + 1.0f, zombiePos.z};
+    Vec3 vectorDistanceCameraZombie = vec3Sub(center, origin);
+    
+    float vectorDirection = vec3Dot(center, origin);
+    
+    if(vectorDirection < 0.0f){
+        return -1.0f;
+    }
+
+    float distanceCameraTwo = vec3Dot(vectorDistanceCameraZombie, vectorDistanceCameraZombie) - vectorDirection * vectorDirection;
+
+    if(distanceCameraTwo > 0.8f * 0.8f){
+        return -1.0f;
+    }
+
+    return vectorDirection;
+}
+
 int main(){
     if(!glfwInit()){
         printf("error, GLFW was not initialized!");
