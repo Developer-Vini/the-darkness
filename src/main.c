@@ -112,8 +112,8 @@ int main(){
 
     Zombie zombies[MAX_ZOM] = {0};
 
-    float zumbiSpeed = 3.0f;
-    float spawTimer = 0.0f;
+    float zumbiSpeed = 3.8f;
+    float spawTimer = 2.0f;
 
     if(!modelLoad(&zumbi, "assets/models/zombie/zombie_crawling.glb")){
         printf("falhou");
@@ -223,7 +223,7 @@ int main(){
                     zumbiSpeed += 0.5f;
                     apareceu = 0;
                     morreu = 0;
-                    spawTimer = 3.0f;
+                    spawTimer = 2.0f;
                     //printf("nivel %d p %d zumbi\n", level, total);
                 }
             }
